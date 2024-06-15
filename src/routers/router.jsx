@@ -1,12 +1,16 @@
 import App from "@/App";
 import Login from "@/pages/loging/Loging";
 import SignUp from "@/pages/signUp/SignUp";
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, redirect } from "react-router-dom";
 import PrivetRoutes from "./PrivetRoutes";
 import Products from "@/pages/products/Products";
 import ProductsAdd from "@/pages/products/ProductsAdd";
 
 const router = createBrowserRouter([
+  {
+    path: "/",
+    loader: () => redirect("/dashboard"),
+  },
   {
     path: "/login",
     element: <Login />,
