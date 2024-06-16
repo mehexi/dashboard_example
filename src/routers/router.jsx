@@ -5,6 +5,8 @@ import { createBrowserRouter, redirect } from "react-router-dom";
 import PrivetRoutes from "./PrivetRoutes";
 import Products from "@/pages/products/Products";
 import ProductsAdd from "@/pages/products/ProductsAdd";
+import axiosInstance from "@/axios/AxiosIntence";
+import ProductsEdit from "@/pages/products/ProductsEdit";
 
 const router = createBrowserRouter([
   {
@@ -36,6 +38,7 @@ const router = createBrowserRouter([
         path: "add",
         element: <h1>add</h1>,
       },
+      
     ],
   },
   {
@@ -67,6 +70,11 @@ const router = createBrowserRouter([
       {
         path: 'add',
         element: <ProductsAdd/>
+      },
+      {
+        path: "edit/:id",
+        element: <ProductsEdit/>,
+        loader: ({params}) => axiosInstance(`/client/products/${params.id}`)
       }
     ],
   },

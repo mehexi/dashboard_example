@@ -1,3 +1,5 @@
+import React, { useEffect, useState } from "react";
+import { useNavigate, useLoaderData } from "react-router-dom";
 import { ChevronLeft, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -11,27 +13,21 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
 import axiosInstance from "@/axios/AxiosIntence";
-import { v4 as uuidv4 } from 'uuid';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
-const ProductsAdd = () => {
-  const [images, setImages] = useState([]);
+const ProductsEdit = () => {
+  const loaderData = useLoaderData();
+  const product = loaderData.data.data;
+
+  const [existingImages, setExistingImages] = useState([]);
+  const [newImages, setNewImages] = useState([]);
   const [productData, setProductData] = useState({
     name: "",
     description: "",
@@ -42,14 +38,27 @@ const ProductsAdd = () => {
   });
   const [saveButtonState, setSaveButtonState] = useState("default");
   const navigate = useNavigate();
-  const [requestIdentifier, setRequestIdentifier] = useState(null);
+
+  useEffect(() => {
+    if (product) {
+      setProductData({
+        name: product.name,
+        description: product.description,
+        price: product.price,
+        status: product.status,
+        sku: product.sku,
+        stock: product.stock,
+      });
+      setExistingImages(product.images);
+    }
+  }, [product]);
 
   const handleAddImage = (event) => {
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImages((prevImages) => [
+        setNewImages((prevImages) => [
           ...prevImages,
           { file, dataUrl: reader.result },
         ]);
@@ -58,8 +67,12 @@ const ProductsAdd = () => {
     }
   };
 
-  const handleRemoveImage = (index) => {
-    setImages((prevImages) => prevImages.filter((_, i) => i !== index));
+  const handleRemoveImage = (index, isNewImage = false) => {
+    if (isNewImage) {
+      setNewImages((prevImages) => prevImages.filter((_, i) => i !== index));
+    } else {
+      setExistingImages((prevImages) => prevImages.filter((_, i) => i !== index));
+    }
   };
 
   const handleInputChange = (e) => {
@@ -72,8 +85,6 @@ const ProductsAdd = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (saveButtonState === "loading") return;
-
     setSaveButtonState("loading");
 
     const formData = new FormData();
@@ -84,30 +95,29 @@ const ProductsAdd = () => {
     formData.append("sku", productData.sku);
     formData.append("stock", productData.stock);
 
-    images.forEach((image) => {
-      formData.append("images", image.file);
-    });
+    // Append existing images URLs
+    existingImages.forEach((imageUrl) => formData.append("existingImages", imageUrl));
 
-    const requestId = uuidv4();
-    setRequestIdentifier(requestId);
+    // Append new image files
+    newImages.forEach((image) => formData.append("newImages", image.file));
 
     try {
-      const result = await axiosInstance.post("/client/products", formData, {
-        headers: {
-          'X-Request-Id': requestId
-        }
-      });
+      let result;
+      if (product._id) {
+        result = await axiosInstance.patch(`/client/products/${product._id}`, formData);
+      }
       console.log(result);
       setSaveButtonState("saved");
       setTimeout(() => {
         setSaveButtonState("default");
-        navigate('/products'); // Redirect to the products list or another appropriate page
       }, 1000);
     } catch (error) {
       console.log(error);
       setSaveButtonState("default");
     }
   };
+
+  const URL = "http://localhost:5001";
 
   return (
     <section className="mx-auto grid max-w-[59rem] flex-1 auto-rows-max gap-4 mt-4">
@@ -128,7 +138,7 @@ const ProductsAdd = () => {
             </Button>
 
             <h1 className="flex-1 shrink-0 whitespace-nowrap text-xl font-semibold tracking-tight sm:grow-0">
-              Add Product
+              Edit Product
             </h1>
 
             <div className="hidden items-center gap-2 md:ml-auto md:flex">
@@ -249,7 +259,7 @@ const ProductsAdd = () => {
                     <div className="grid gap-3">
                       <Label htmlFor="status">Status</Label>
                       <Select
-                        value={productData.status}
+                        defaultValue={productData.status}
                         onValueChange={(value) =>
                           setProductData((prevData) => ({
                             ...prevData,
@@ -258,11 +268,11 @@ const ProductsAdd = () => {
                         }
                       >
                         <SelectTrigger id="status" aria-label="Select status">
-                          <SelectValue placeholder="Select status" />
+                          <SelectValue placeholder="Select a status" />
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="draft">Draft</SelectItem>
-                          <SelectItem value="active">Active</SelectItem>
+                          <SelectItem value="active">active</SelectItem>
                           <SelectItem value="archived">Archived</SelectItem>
                         </SelectContent>
                       </Select>
@@ -270,76 +280,70 @@ const ProductsAdd = () => {
                   </div>
                 </CardContent>
               </Card>
-              <Card className="overflow-hidden">
+              <Card>
                 <CardHeader>
-                  <CardTitle>Product Images</CardTitle>
+                  <CardTitle>Media</CardTitle>
                   <CardDescription>
-                    Add or remove product images
+                    Attach product images here
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="grid gap-2">
-                    {images.length > 0 && (
-                      <div className="relative">
-                        <img
-                          alt="Product image 1"
-                          className="aspect-square rounded-md object-cover"
-                          src={images[0].dataUrl}
-                          height="300"
-                          width="300"
-                        />
-                        <button
-                          type="button"
-                          className="absolute top-2 right-2 bg-white/20 h-8 backdrop-blur border flex items-center justify-center w-8 text-white rounded-full p-1"
-                          onClick={() => handleRemoveImage(0)}
-                        >
-                          &#10005;
-                        </button>
-                      </div>
-                    )}
-                    <div className="grid grid-cols-3 gap-2">
-                      {images.slice(1).map((image, index) => (
-                        <div key={index + 1} className="relative">
+                    <Label>Image Upload</Label>
+                    <Input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleAddImage}
+                    />
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      {existingImages.map((imageUrl, index) => (
+                        <div key={index} className="relative w-32 h-32">
                           <img
-                            alt={`Product image ${index + 2}`}
-                            className="aspect-square w-full rounded-md object-cover"
-                            height="84"
-                            src={image.dataUrl}
-                            width="84"
+                            src={`${URL}/${imageUrl}`}
+                            alt={`Product Image ${index + 1}`}
+                            className="object-cover w-full h-full rounded-md"
                           />
-                          <button
+                          <Button
                             type="button"
-                            className="absolute top-2 right-2 border rounded-full h-2 w-2 bg-white/20 blur"
-                            onClick={() => handleRemoveImage(index + 1)}
-                          ></button>
+                            variant="destructive"
+                            size="icon"
+                            className="absolute top-1 right-1"
+                            onClick={() => handleRemoveImage(index)}
+                          >
+                            <span className="sr-only">Remove image</span>
+                            <Upload className="h-4 w-4" />
+                          </Button>
                         </div>
                       ))}
-                      <div>
-                        <label className="flex aspect-square w-full items-center justify-center rounded-md border border-dashed cursor-pointer">
-                          <Upload className="h-4 w-4 text-muted-foreground" />
-                          <span className="sr-only">Upload</span>
-                          <input
-                            type="file"
-                            accept="image/*"
-                            name="images"
-                            className="hidden"
-                            onChange={handleAddImage}
+                      {newImages.map((image, index) => (
+                        <div key={index} className="relative w-32 h-32">
+                          <img
+                            src={image.dataUrl}
+                            alt={`New Product Image ${index + 1}`}
+                            className="object-cover w-full h-full rounded-md"
                           />
-                        </label>
-                      </div>
+                          <Button
+                            type="button"
+                            variant="destructive"
+                            size="icon"
+                            className="absolute top-1 right-1"
+                            onClick={() => handleRemoveImage(index, true)}
+                          >
+                            <span className="sr-only">Remove new image</span>
+                            <Upload className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 </CardContent>
               </Card>
             </div>
           </div>
-          <div className="flex items-center justify-center gap-2 md:hidden">
-            <Button type="button" variant="outline" size="sm">
-              Discard
-            </Button>
+          <div className="flex md:hidden">
             <Button
               type="submit"
-              size="sm"
+              className="w-full"
               disabled={saveButtonState === "loading"}
             >
               {saveButtonState === "loading" && <span>Loading...</span>}
@@ -353,4 +357,4 @@ const ProductsAdd = () => {
   );
 };
 
-export default ProductsAdd;
+export default ProductsEdit;

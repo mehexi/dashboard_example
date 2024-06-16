@@ -20,7 +20,7 @@ const ActiveLink = ({ to, children }) => {
     <NavLink
       to={to}
       className={({ isActive }) =>
-        `transition-all duration-300 px-4 py-2 ${isActive ? 'active-link' : 'inactive-link'}`
+        `transition-all duration-300 px-4 py-2 ${isActive ? 'bg-accent text-accent-foreground transition-colors' : 'inactive-link'}`
       }
     >
       {children}
@@ -105,7 +105,7 @@ const ActiveLink = ({ to, children }) => {
               <Tooltip>
                 <TooltipTrigger asChild>
                   <ActiveLink
-                    to="#"
+                    to="/settings"
                     className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
                   >
                     <Settings className="h-5 w-5" />

@@ -29,18 +29,19 @@ import { useTheme } from "@/utility/ThemeProvider";
 
 const Header = () => {
   const { setTheme } = useTheme();
-  const [currentTheme, setCurrentTheme] = useState(localStorage.getItem('vite-ui-theme')|| 'dark')
-  
+  const [currentTheme, setCurrentTheme] = useState(
+    localStorage.getItem("vite-ui-theme") || "dark"
+  );
+
   const toggleTheme = () => {
-    if (currentTheme === 'dark') {
-      setTheme('light');
-      setCurrentTheme('light')
+    if (currentTheme === "dark") {
+      setTheme("light");
+      setCurrentTheme("light");
+    } else {
+      setTheme("dark");
+      setCurrentTheme("dark");
     }
-    else { 
-      setTheme('dark');
-      setCurrentTheme('dark')
-    }
-  }
+  };
 
   const menuItems = [
     { label: "Dashboard", href: "/" },
@@ -51,10 +52,8 @@ const Header = () => {
   ];
 
   const { user, signOut } = useContext(AuthContext);
-  console.log(user);
 
   const photoId = user?.photoURL || user?.photoUrl;
-  console.log(photoId);
   let photo;
 
   if (photoId) {
@@ -129,7 +128,7 @@ const Header = () => {
       </Sheet>
       <DynamicBreadcrumb menuItems={menuItems} />
       <div className="ml-auto flex gap-3">
-        <Button variant="outline" onClick={toggleTheme}  size="icon">
+        <Button variant="outline" onClick={toggleTheme} size="icon">
           <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
           <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
           <span className="sr-only">Toggle theme</span>
