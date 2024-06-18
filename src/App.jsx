@@ -9,7 +9,7 @@ function App() {
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <SideNav />
       <Header />
-      <main className="pl-4  sm:pl-20 pr-4">
+      <main className="pl-4  sm:pl-20 pr-4 bg-background">
         <Outlet />
       </main>
     </ThemeProvider>

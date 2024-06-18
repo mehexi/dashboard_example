@@ -1,4 +1,4 @@
-import axiosInstance from "@/axios/AxiosIntence"; 
+import axiosInstance from "@/axios/AxiosIntence";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useContext, useState } from "react";
@@ -12,11 +12,11 @@ import {
 } from "@/components/ui/card";
 import { Label } from "@radix-ui/react-dropdown-menu";
 import { AuthContext } from "@/auth/AuthProvider";
+import { getAuth, updateProfile } from "firebase/auth";
 
 const SignUp = () => {
-
-  const { handleSetUser, setToken } = useContext(AuthContext)
-  const navigate = useNavigate()
+  const { handleSetUser, setToken, createUser } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const [step, setStep] = useState(1);
   const [animating, setAnimating] = useState(false);
@@ -31,6 +31,7 @@ const SignUp = () => {
     occupation: '',
     email: '',
     password: '',
+    photoURL: '', // Add photoURL to formData
   });
 
   const handleChange = (e) => {
@@ -40,16 +41,16 @@ const SignUp = () => {
     } else {
       setFormData({ ...formData, [id]: value });
     }
-    setError(''); 
+    setError('');
   };
 
   const handleFirstSubmit = (e) => {
     e.preventDefault();
     setAnimating(true);
     setTimeout(() => {
-      setStep(2); 
+      setStep(2);
       setAnimating(false);
-    }, 300); 
+    }, 300);
   };
 
   const handleFinalSubmit = async (e) => {
@@ -60,11 +61,26 @@ const SignUp = () => {
     }
 
     try {
-      const response = await axiosInstance.post('/signUp', formData);
+      // Create user
+      const result = await createUser(formData.email, formData.password);
+      console.log(result.user);
+      handleSetUser(result.user);
+      setToken(result.user.uid);
+
+      // Update profile with displayName and photoURL
+      const auth = getAuth();
+      await updateProfile(auth.currentUser, {
+        displayName: `${formData.firstName} ${formData.lastName}`, // Combine first and last name for displayName
+        photoURL: formData.photoURL,
+      });
+      console.log('Profile updated successfully');
+
+      // Submit form data to the server
+      const response = await axiosInstance.post("/signUp", formData);
       console.log(response.data);
-      setToken(response.data.token);
-      handleSetUser(response.data.user);
-      navigate('/dashboard')
+
+      // Navigate to the dashboard after successful signup
+      navigate("/dashboard");
     } catch (error) {
       console.error(error);
       setError('Failed to sign up. Please try again.');
@@ -194,6 +210,7 @@ const SignUp = () => {
                   required
                 />
               </div>
+              
               <Button type="submit" className="w-full">
                 Sign Up
               </Button>

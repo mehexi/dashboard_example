@@ -7,6 +7,10 @@ import Products from "@/pages/products/Products";
 import ProductsAdd from "@/pages/products/ProductsAdd";
 import axiosInstance from "@/axios/AxiosIntence";
 import ProductsEdit from "@/pages/products/ProductsEdit";
+import User from "@/pages/user/User";
+import UserView from "@/pages/user/userUi/UserView";
+import CurrentUser from "@/pages/user/userUi/CurrentUser";
+import SelectedUser from "@/pages/user/SelectedUser";
 
 const router = createBrowserRouter([
   {
@@ -38,7 +42,6 @@ const router = createBrowserRouter([
         path: "add",
         element: <h1>add</h1>,
       },
-      
     ],
   },
   {
@@ -65,17 +68,17 @@ const router = createBrowserRouter([
     children: [
       {
         path: "",
-        element: <Products/>,
+        element: <Products />,
       },
       {
-        path: 'add',
-        element: <ProductsAdd/>
+        path: "add",
+        element: <ProductsAdd />,
       },
       {
         path: "edit/:id",
-        element: <ProductsEdit/>,
-        loader: ({params}) => axiosInstance(`/client/products/${params.id}`)
-      }
+        element: <ProductsEdit />,
+        loader: ({ params }) => axiosInstance(`/client/products/${params.id}`),
+      },
     ],
   },
   {
@@ -88,7 +91,21 @@ const router = createBrowserRouter([
     children: [
       {
         path: "",
-        element: <h1>customer</h1>,
+        element: <User />,
+        children: [
+          {
+            path: "",
+            element: <UserView />,
+          },
+          {
+            path: ":id",
+            element: <SelectedUser/>,
+            loader: async ({ params }) => {
+              const response = await axiosInstance.get(`/general/users/${params.id}`);
+              return response.data;
+            },
+          },
+        ]
       },
     ],
   },

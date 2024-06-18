@@ -40,6 +40,7 @@ const ProductView = forwardRef((props, ref) => {
   const tableRef = useRef();
 
   const { filter } = props;
+  console.log(data)
 
   useImperativeHandle(ref, () => ({
     getTableData: () => tableRef.current,

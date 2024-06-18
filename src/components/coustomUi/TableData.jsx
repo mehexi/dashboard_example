@@ -3,7 +3,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { Button } from '../ui/button';
 import { MoreHorizontal } from 'lucide-react';
 
-const TableData = ({ columns, data, onEdit, onDelete }) => {
+const TableData = ({ columns, data, onEdit, onDelete,onClick }) => {
   return (
     <Table>
       <TableHeader>
@@ -18,9 +18,9 @@ const TableData = ({ columns, data, onEdit, onDelete }) => {
           </TableHead>
         </TableRow>
       </TableHeader>
-      <TableBody>
+      <TableBody className='cursor-pointer'>
         {data.map((row, rowIndex) => (
-          <TableRow key={rowIndex}>
+          <TableRow key={rowIndex} onClick={()=>onClick(row)} >
             {columns.map((column) => (
               <TableCell key={column.key} className={column.className}>
                 {column.render ? column.render(row) : row[column.key]}

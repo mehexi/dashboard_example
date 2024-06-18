@@ -26,7 +26,9 @@ const AuthProvider = ({ children }) => {
     return createUserWithEmailAndPassword(auth,email,password)
   }
 
-  //signout
+
+
+  //sign-out
 
   const signOut = () => {
     console.log('signOut');
@@ -35,6 +37,7 @@ const AuthProvider = ({ children }) => {
         console.log("Sign-out successful.");
         setUser(null)
         localStorage.removeItem('token')
+        localStorage.removeItem('uID')
         window.location.reload();
       })
       .catch((error) => {
@@ -59,6 +62,9 @@ const AuthProvider = ({ children }) => {
   const handleSetUser = (user) => {
     if (user) {
       setUser(user)
+      if (user._id) {
+        localStorage.setItem('uID' , user._id)
+      }
     }
   }
 
