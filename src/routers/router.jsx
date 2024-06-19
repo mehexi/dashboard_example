@@ -11,6 +11,7 @@ import User from "@/pages/user/User";
 import UserView from "@/pages/user/userUi/UserView";
 import CurrentUser from "@/pages/user/userUi/CurrentUser";
 import SelectedUser from "@/pages/user/SelectedUser";
+import SelectedProducts from "@/pages/products/SelectedProducts";
 
 const router = createBrowserRouter([
   {
@@ -71,6 +72,11 @@ const router = createBrowserRouter([
         element: <Products />,
       },
       {
+        path: ':id',
+        element: <SelectedProducts />,
+        loader: ({params}) => axiosInstance(`/client/products/${params.id}`)
+      },
+      {
         path: "add",
         element: <ProductsAdd />,
       },
@@ -99,13 +105,15 @@ const router = createBrowserRouter([
           },
           {
             path: ":id",
-            element: <SelectedUser/>,
+            element: <SelectedUser />,
             loader: async ({ params }) => {
-              const response = await axiosInstance.get(`/general/users/${params.id}`);
+              const response = await axiosInstance.get(
+                `/general/users/${params.id}`
+              );
               return response.data;
             },
           },
-        ]
+        ],
       },
     ],
   },

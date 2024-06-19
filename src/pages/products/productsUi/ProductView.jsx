@@ -1,27 +1,35 @@
-import React, { useRef, forwardRef, useImperativeHandle, useState, useEffect } from 'react';
-import { FaStar } from 'react-icons/fa6';
+import React, {
+  useRef,
+  forwardRef,
+  useImperativeHandle,
+  useState,
+  useEffect,
+} from "react";
+import { FaStar } from "react-icons/fa6";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
+} from "@/components/ui/card";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-} from '@/components/ui/select';
-import { SelectValue } from '@radix-ui/react-select';
-import axiosInstance from '@/axios/AxiosIntence';
-import PaginationComp from '@/components/coustomUi/Pagination';
-import TableData from '@/components/coustomUi/TableData';
-import { formatDate } from '@/utility/dataFromating';
-import { Button } from '@/components/ui/button';
-import { Link, useNavigate } from 'react-router-dom';
+} from "@/components/ui/select";
+import { SelectValue } from "@radix-ui/react-select";
+import axiosInstance from "@/axios/AxiosIntence";
+import PaginationComp from "@/components/coustomUi/Pagination";
+import TableData from "@/components/coustomUi/TableData";
+import { formatDate } from "@/utility/dataFromating";
+import { Button } from "@/components/ui/button";
+import { Link, useNavigate } from "react-router-dom";
 
-import { AlertDialogFooter, AlertDialog,
+import {
+  AlertDialogFooter,
+  AlertDialog,
   AlertDialogTrigger,
   AlertDialogContent,
   AlertDialogHeader,
@@ -29,7 +37,8 @@ import { AlertDialogFooter, AlertDialog,
   AlertDialogDescription,
   // AlertDialogFooter,
   AlertDialogCancel,
-  AlertDialogAction, } from '@/components/ui/alert-dialog';
+  AlertDialogAction,
+} from "@/components/ui/alert-dialog";
 
 const ProductView = forwardRef((props, ref) => {
   const [data, setData] = useState([]);
@@ -40,7 +49,7 @@ const ProductView = forwardRef((props, ref) => {
   const tableRef = useRef();
 
   const { filter } = props;
-  console.log(data)
+  console.log(data);
 
   useImperativeHandle(ref, () => ({
     getTableData: () => tableRef.current,
@@ -58,7 +67,7 @@ const ProductView = forwardRef((props, ref) => {
     }
   };
 
-  const URL = 'http://localhost:5001';
+  const URL = "http://localhost:5001";
 
   useEffect(() => {
     fetchData(currentPage, pageSize);
@@ -66,42 +75,50 @@ const ProductView = forwardRef((props, ref) => {
 
   const columns = [
     {
-      key: 'image',
+      key: "image",
       header: <span className="sr-only">Image</span>,
-      className: 'hidden w-[100px] sm:table-cell capitalize',
+      className: "hidden w-[100px] sm:table-cell capitalize",
       render: (row) => (
         <img
           alt="data image"
-          className="aspect-square rounded-md object-cover border capitalize" 
+          className="aspect-square rounded-md object-cover border capitalize"
           height="64"
           src={`${URL}${row.images[0]}`}
           width="64"
         />
       ),
     },
-    { key: 'name', header: 'Name', className: 'font-medium capitalize' },
-    { key: 'description', header: 'Description', className: 'font-medium capitalize' },
-    { key: 'price', header: 'Price', className: 'hidden md:table-cell capitalize' },
+    { key: "name", header: "Name", className: "font-medium capitalize" },
     {
-      key: 'status',
-      header: 'Status',
-      className: 'hidden md:table-cell capitalize',
+      key: "description",
+      header: "Description",
+      className: "font-medium capitalize",
     },
     {
-      key: 'createdAt',
-      header: 'Created at',
-      className: 'hidden md:table-cell capitalize',
+      key: "price",
+      header: "Price",
+      className: "hidden md:table-cell capitalize",
+    },
+    {
+      key: "status",
+      header: "Status",
+      className: "hidden md:table-cell capitalize",
+    },
+    {
+      key: "createdAt",
+      header: "Created at",
+      className: "hidden md:table-cell capitalize",
       render: (row) => formatDate(row.createdAt),
     },
     {
-      key: 'rating',
-      header: 'Rating',
-      className: 'hidden md:table-cell capitalize',
+      key: "rating",
+      header: "Rating",
+      className: "hidden md:table-cell capitalize",
       render: (row) => (
         <div className="flex gap-2 items-center">
           <div className="flex">
             {Array.from({ length: 5 }, (_, i) => (
-              <FaStar key={i} color={i < row.rating ? '#FFD700' : '#E0E0E0'} />
+              <FaStar key={i} color={i < row.rating ? "#FFD700" : "#E0E0E0"} />
             ))}
           </div>
           <span>{row.rating}</span>
@@ -137,6 +154,11 @@ const ProductView = forwardRef((props, ref) => {
     }
   };
 
+  const onclick = (id) => {
+    console.log(id)
+    navigate(`${id}`)
+  }
+
   return (
     <Card>
       <CardHeader className="flex flex-row justify-between">
@@ -160,11 +182,13 @@ const ProductView = forwardRef((props, ref) => {
       {totalData === 0 ? (
         <CardContent>
           <div className="flex flex-col items-center gap-1 text-center">
-            <h3 className="text-2xl font-bold tracking-tight">You have no products</h3>
+            <h3 className="text-2xl font-bold tracking-tight">
+              You have no products
+            </h3>
             <p className="text-sm text-muted-foreground">
               You can start selling as soon as you add a product.
             </p>
-            <Link to={'add'}>
+            <Link to={"add"}>
               <Button className="mt-4">Add Product</Button>
             </Link>
           </div>
@@ -175,6 +199,7 @@ const ProductView = forwardRef((props, ref) => {
             <TableData
               columns={columns}
               data={data}
+              onClick={(row) => onclick(row._id)}
               onEdit={(row) => handleEdit(row._id)}
               onDelete={(row) => setItemToDelete(row)} // Set the item to delete when delete button is clicked
             />
@@ -189,18 +214,26 @@ const ProductView = forwardRef((props, ref) => {
       )}
 
       {/* Alert Dialog for deletion confirmation */}
-      <AlertDialog open={!!itemToDelete} onOpenChange={() => setItemToDelete(null)}>
+      <AlertDialog
+        open={!!itemToDelete}
+        onOpenChange={() => setItemToDelete(null)}
+      >
         <AlertDialogTrigger />
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
             <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete your product.
+              This action cannot be undone. This will permanently delete your
+              product.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel onClick={() => setItemToDelete(null)}>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={confirmDelete}>Continue</AlertDialogAction>
+            <AlertDialogCancel onClick={() => setItemToDelete(null)}>
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction onClick={confirmDelete}>
+              Continue
+            </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
@@ -208,6 +241,6 @@ const ProductView = forwardRef((props, ref) => {
   );
 });
 
-ProductView.displayName = 'ProductView';
+ProductView.displayName = "ProductView";
 
 export default ProductView;
