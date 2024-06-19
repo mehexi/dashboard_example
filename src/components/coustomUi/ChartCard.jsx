@@ -26,7 +26,10 @@ import { DatePickerWithRange } from "../ui/DatePicker";
 
 const ChartCard = ({ data, timeRange = "monthly", onToggle }) => {
   const [selectedRange, setSelectedRange] = useState(timeRange);
-  const [dateRange, setDateRange] = useState([new Date("2021-01-02"), new Date("2021-11-17")]);
+  const [dateRange, setDateRange] = useState([
+    new Date("2021-01-02"),
+    new Date("2021-11-17"),
+  ]);
 
   const stat = data.data.stat[0];
   const monthlyData = stat.monthlyData;
@@ -52,10 +55,17 @@ const ChartCard = ({ data, timeRange = "monthly", onToggle }) => {
     return (!startDate || date >= startDate) && (!endDate || date <= endDate);
   });
 
-  const totalSales = filteredDailyData.reduce((acc, item) => acc + item.totalSales, 0);
-  const totalUnits = filteredDailyData.reduce((acc, item) => acc + item.totalUnits, 0);
+  const totalSales = filteredDailyData.reduce(
+    (acc, item) => acc + item.totalSales,
+    0
+  );
+  const totalUnits = filteredDailyData.reduce(
+    (acc, item) => acc + item.totalUnits,
+    0
+  );
 
-  const chartData = selectedRange === "monthly" ? monthlyData : filteredDailyData;
+  const chartData =
+    selectedRange === "monthly" ? monthlyData : filteredDailyData;
 
   // Debug logs
   console.log("Date Range:", dateRange);
@@ -94,8 +104,7 @@ const ChartCard = ({ data, timeRange = "monthly", onToggle }) => {
             <Tooltip content={<CoustomToolTip />} />
             <Bar
               dataKey="totalSales"
-              fill="hsl(var(--foreground))"
-              barSize={20}
+              fill="hsl(var(--primary))"
               radius={[4, 4, 0, 0]}
             />
           </BarChart>

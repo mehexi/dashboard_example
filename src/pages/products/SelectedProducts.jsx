@@ -3,6 +3,7 @@ import { useLoaderData } from "react-router-dom";
 import TitleCard from "./productsUi/TitleCard";
 import ProductName from "./productsUi/ProductName";
 import ChartCard from "@/components/coustomUi/ChartCard";
+import TransactionsCard from "../user/userUi/TransactionsCard";
 
 const SelectedProducts = () => {
   const data = useLoaderData();
@@ -36,6 +37,9 @@ const SelectedProducts = () => {
         <ChartCard
           data={data}
         />
+        <div className="col-span-2 h-full flex">
+          <TransactionsCard data={data.data.data} />
+          </div>
       </div>
     </section>
   );
