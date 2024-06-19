@@ -86,14 +86,28 @@
   }
 }
 
-.gradient {
-  @apply bg-gradient-to-r from-teal-500 via-purple-500 to-pink-500;
-  background: linear-gradient(
-    80deg,
-    rgba(34, 193, 195, 1) 0%,
-    rgba(135, 28, 229, 1) 51%,
-    rgba(255, 0, 191, 1) 100%
-  );
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  25% {
+    background-position: 50% 100%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  75% {
+    background-position: 50% 0%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-gradient {
+  background: linear-gradient(90deg, #d946ef, #7c3aed, #ec4899);
+  background-size: 200% 200%;
+  animation: gradient 10s ease infinite;
 }
 
 @keyframes slide-out {

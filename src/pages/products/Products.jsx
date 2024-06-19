@@ -70,7 +70,7 @@ const Products = () => {
   };
 
   return (
-    <section className="mt-5 flex flex-col gap-4">
+    <section className=" flex flex-col gap-4">
       <div className="flex justify-between">
         <Tabs
           defaultValue="all"

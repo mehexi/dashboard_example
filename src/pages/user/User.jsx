@@ -12,7 +12,7 @@ const User = () => {
   console.log(user)
 
   return (
-    <section className="mt-5 flex flex-col gap-4">
+    <section className=" flex flex-col gap-4">
       <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
         <CurrentUser user={user} />
         <CurrentUser user={user} />

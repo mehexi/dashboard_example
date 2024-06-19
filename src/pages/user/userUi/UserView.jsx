@@ -41,7 +41,6 @@ const UserView = () => {
     const navigate = useNavigate()
 
     const selectUser = data => {
-        // console.log(data)
         const id = data._id
         navigate(`${id}`)
     }
