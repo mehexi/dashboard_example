@@ -10,7 +10,7 @@ import RatingStars from "@/utility/RatingStars";
 
 const TransactionsCard = ({ data }) => {
   return (
-    <Card className="flex flex-col">
+    <Card className="flex flex-col h-full">
       <CardContent className="flex flex-col gap-2 p-3">
         <img className="aspect-video object-cover" src={`http://localhost:5001${data.images[0]}`} alt="" />
         <CardTitle>{data.name}</CardTitle>

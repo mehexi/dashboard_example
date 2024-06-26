@@ -67,24 +67,18 @@ const ChartCard = ({ data, timeRange = "monthly", onToggle }) => {
   const chartData =
     selectedRange === "monthly" ? monthlyData : filteredDailyData;
 
-  // Debug logs
-  console.log("Date Range:", dateRange);
-  console.log("Filtered Daily Data:", filteredDailyData);
-  console.log("Total Sales:", totalSales);
-  console.log("Total Units:", totalUnits);
-
   return (
-    <Card className="col-span-5">
-      <CardHeader className="">
-        <div className="flex justify-between">
-          <div>
+    <Card className="w-full max-w-full col-span-5">
+      <CardHeader className="p-4 sm:p-6">
+        <div className="flex flex-col sm:flex-row sm:justify-between">
+          <div className="mb-4 sm:mb-0">
             <CardDescription>Overview</CardDescription>
-            <CardTitle className="text-4xl">{totalSales}</CardTitle>
+            <CardTitle className="text-2xl sm:text-4xl">{totalSales}</CardTitle>
             <p>Total Units Sold: {totalUnits}</p>
           </div>
-          <div className="flex justify-between gap-2">
+          <div className="flex flex-col sm:flex-row gap-2">
             <Select onValueChange={handleRangeChange} value={selectedRange}>
-              <SelectTrigger className="w-40">
+              <SelectTrigger className="w-full sm:w-40">
                 <SelectValue placeholder="Select range" />
               </SelectTrigger>
               <SelectContent>
@@ -96,8 +90,8 @@ const ChartCard = ({ data, timeRange = "monthly", onToggle }) => {
           </div>
         </div>
       </CardHeader>
-      <CardContent>
-        <ResponsiveContainer width="100%" height={300}>
+      <CardContent className="p-4 sm:p-6">
+        <ResponsiveContainer width="100%" height={400}>
           <BarChart data={chartData}>
             <XAxis dataKey={selectedRange === "monthly" ? "month" : "date"} />
             <YAxis />

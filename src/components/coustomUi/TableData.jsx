@@ -3,7 +3,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { Button } from '../ui/button';
 import { MoreHorizontal } from 'lucide-react';
 
-const TableData = ({ columns, data, onEdit, onDelete,onClick }) => {
+const TableData = ({ columns, data, onEdit, onDelete,onClick,isOptionAvilable = true }) => {
   return (
     <Table>
       <TableHeader>
@@ -26,7 +26,7 @@ const TableData = ({ columns, data, onEdit, onDelete,onClick }) => {
                 {column.render ? column.render(row) : row[column.key]}
               </TableCell>
             ))}
-            <TableCell>
+            <TableCell className={isOptionAvilable ? 'block': 'hidden'}>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button aria-haspopup="true" size="icon" variant="ghost">

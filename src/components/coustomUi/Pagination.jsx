@@ -64,7 +64,7 @@ const PaginationComp = ({ currentPage, pageSize, totalItems, onPageChange }) => 
   return (
     <div className="mt-2">
       <Pagination>
-        <PaginationContent>
+        <PaginationContent className='flex flex-wrap justify-center'>
           <PaginationItem>
             <PaginationPrevious onClick={handlePrevious} disabled={currentPage === 1} className={'cursor-pointer'} />
           </PaginationItem>

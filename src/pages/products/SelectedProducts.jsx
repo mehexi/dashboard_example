@@ -4,6 +4,9 @@ import TitleCard from "./productsUi/TitleCard";
 import ProductName from "./productsUi/ProductName";
 import ChartCard from "@/components/coustomUi/ChartCard";
 import TransactionsCard from "../user/userUi/TransactionsCard";
+import { Card } from "@/components/ui/card";
+import TableData from "@/components/coustomUi/TableData";
+import ProductTable from "./productsUi/ProductTable";
 
 const SelectedProducts = () => {
   const data = useLoaderData();
@@ -34,12 +37,10 @@ const SelectedProducts = () => {
         <TitleCard title={"total revenue"} data={yearlyRevenue} />
       </div>
       <div className="mt-4 grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-        <ChartCard
-          data={data}
-        />
-        <div className="col-span-2 h-full flex">
-          <TransactionsCard data={data.data.data} />
-          </div>
+        <ChartCard data={data} />
+        <div className="col-span-2">
+          <ProductTable productDetails={productDetails} productStat={productStat} />
+        </div>
       </div>
     </section>
   );

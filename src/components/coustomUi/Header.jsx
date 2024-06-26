@@ -21,13 +21,15 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "../ui/input";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "@/auth/AuthProvider";
 import DynamicBreadcrumb from "./BreadCrumb";
 import { FaCircleUser } from "react-icons/fa6";
 import { useTheme } from "@/utility/ThemeProvider";
+import { getFromCart } from "@/utility/addToCart";
 
 const Header = () => {
+  const [cart, setCart] = useState();
   const { setTheme } = useTheme();
   const [currentTheme, setCurrentTheme] = useState(
     localStorage.getItem("vite-ui-theme") || "dark"
@@ -70,8 +72,25 @@ const Header = () => {
     photo = <FaCircleUser size={34} />;
   }
 
+  const updateCart = () => {
+    const cart = getFromCart();
+    console.log(cart)
+    setCart(cart);
+  };
+
+  useEffect(() => {
+    updateCart();
+
+    window.addEventListener("cartUpdated", updateCart);
+
+    return () => {
+      window.removeEventListener("cartUpdated", updateCart);
+    };
+  }, []);
+
+
   return (
-    <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b border-red-400  bg-background px-4 pb-4  sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6 sm:ml-14 mt-3">
+    <header className=" top-0 z-30 flex h-14 items-center gap-4 border-b border-red-400  bg-background px-4 pb-4  sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6 sm:ml-14 mt-3">
       <Sheet>
         <SheetTrigger asChild>
           <Button size="icon" variant="outline" className="sm:hidden">
@@ -82,7 +101,7 @@ const Header = () => {
         <SheetContent side="left" className="sm:max-w-xs">
           <nav className="grid gap-6 text-lg font-medium">
             <Link
-              to={"/dashboard"}
+              to={"/"}
               className="group flex h-10 w-10 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:text-base"
             >
               <Package2 className="h-5 w-5 transition-all group-hover:scale-110" />
@@ -133,7 +152,14 @@ const Header = () => {
           <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
           <span className="sr-only">Toggle theme</span>
         </Button>
-
+        {cart ? (
+          <Button variant="outline" className="flex gap-2">
+            <ShoppingCart className="h-[1.2rem] w-[1.2rem]" />
+            <span className="text-base font-light">{cart.length}</span>
+          </Button>
+        ) : (
+          <></>
+        )}
         <div className="relative ml-auto flex-1 md:grow-0">
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input

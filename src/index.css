@@ -125,3 +125,16 @@
 .recharts-bar-rectangle:hover {
   fill: initial !important;  /* Replace with desired hover style */
 }
+
+
+.collapsible-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.collapsible-content.expanded {
+  /* padding: 16px; */
+  max-height: fit-content; /* Set to a high value to allow for content expansion */
+}
+
