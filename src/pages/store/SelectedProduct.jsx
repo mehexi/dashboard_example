@@ -24,6 +24,11 @@ const SelectedProduct = () => {
 
   const navigate = useNavigate();
 
+  const buyProduct = (product) => {
+    addToCart(product)
+    navigate('/checkout')
+  }
+
   return (
     <section className="mx-auto w-full max-w-[80rem] p-4">
       <Button
@@ -81,7 +86,7 @@ const SelectedProduct = () => {
               <ShoppingCart size={18} />
               <h1>Add to cart</h1>
             </Button>
-            <Button className="w-full">
+            <Button onClick={()=>buyProduct(product)}  className="w-full">
               <h1>Buy now</h1>
             </Button>
           </CardFooter>

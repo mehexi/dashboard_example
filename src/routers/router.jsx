@@ -15,6 +15,8 @@ import SelectedProducts from "@/pages/products/SelectedProducts";
 import Order from "@/pages/order/Order";
 import Store from "@/pages/store/Store";
 import SelectedProduct from "@/pages/store/SelectedProduct";
+import Checkout from "@/pages/checkout/Checkout";
+import { getFromCart } from "@/utility/addToCart";
 
 const router = createBrowserRouter([
   {
@@ -29,6 +31,17 @@ const router = createBrowserRouter([
         path: '/:id',
         element: <SelectedProduct />,
         loader: ({params}) => axiosInstance(`/client/products/${params.id}`)
+      }
+    ]
+  },
+  {
+    path: '/checkout',
+    element: <App />,
+    children: [
+      {
+        path: '',
+        element: <Checkout />,
+        loader: getFromCart
       }
     ]
   },

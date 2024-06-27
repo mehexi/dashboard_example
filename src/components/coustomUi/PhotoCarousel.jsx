@@ -8,6 +8,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import config from "@/config";
+import { ChevronLeft } from "lucide-react";
 
 export function PhotoCarousel({ data }) {
   const [api, setApi] = useState(null);
@@ -41,7 +42,15 @@ export function PhotoCarousel({ data }) {
                   className="w-full object-cover aspect-square h-full"
                 />
                 <div className="py-2 text-center text-sm text-muted-foreground absolute z-10 bottom-5 bg-black/20 px-3 rounded-full ">
-                  <h1 className="text-white">Slide {current} of {count}</h1>
+                  <CarouselPrevious className="">
+                    <ChevronLeft  />
+                  </CarouselPrevious>
+                  <h1 className="text-white">
+                    Slide {current} of {count}
+                  </h1>
+                  <CarouselNext>
+                    <ChevronLeft className="text-white" />
+                  </CarouselNext>
                 </div>
               </div>
             </CarouselItem>

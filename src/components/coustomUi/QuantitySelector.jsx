@@ -39,7 +39,7 @@ const QuantitySelector = ({ available, quantity, setQuantity }) => {
           +
         </Button>
       </div>
-      <div className="mt-2 text-gray-500 text-sm">Available: {available}</div>
+      <div className=" text-gray-500 text-xs">Available: {available}</div>
     </div>
   );
 };

@@ -9,7 +9,7 @@ import {
   Users2,
 } from "lucide-react";
 import { Moon, Sun } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { Button } from "../ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import {
@@ -71,10 +71,10 @@ const Header = () => {
   } else {
     photo = <FaCircleUser size={34} />;
   }
+  
 
   const updateCart = () => {
     const cart = getFromCart();
-    console.log(cart)
     setCart(cart);
   };
 
@@ -87,6 +87,19 @@ const Header = () => {
       window.removeEventListener("cartUpdated", updateCart);
     };
   }, []);
+
+  const ActiveLink = ({ to, children }) => {
+    return (
+      <NavLink
+        to={to}
+        className={({ isActive }) =>
+          `transition-all duration-300 px-4 py-2 ${isActive ? 'bg-accent text-accent-foreground flex gap-3 items-center w-fit rounded-lg' : 'inactive-link flex gap-3 items-center'}`
+        }
+      >
+        {children}
+      </NavLink>
+    );
+  };
 
 
   return (
@@ -107,41 +120,41 @@ const Header = () => {
               <Package2 className="h-5 w-5 transition-all group-hover:scale-110" />
               <span className="sr-only">Acme Inc</span>
             </Link>
-            <Link
+            <ActiveLink
               to={"/dashboard"}
               className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
             >
               <Home className="h-5 w-5" />
               Dashboard
-            </Link>
-            <Link
+            </ActiveLink>
+            <ActiveLink
               to={"/order"}
               className="flex items-center gap-4 px-2.5 text-foreground"
             >
               <ShoppingCart className="h-5 w-5" />
               Orders
-            </Link>
-            <Link
+            </ActiveLink>
+            <ActiveLink
               to={"/products"}
               className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
             >
               <Package className="h-5 w-5" />
               Products
-            </Link>
-            <Link
+            </ActiveLink>
+            <ActiveLink
               to={"/customers"}
               className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
             >
               <Users2 className="h-5 w-5" />
               Customers
-            </Link>
-            <Link
+            </ActiveLink>
+            <ActiveLink
               to={"/settings"}
               className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
             >
               <LineChart className="h-5 w-5" />
               Settings
-            </Link>
+            </ActiveLink>
           </nav>
         </SheetContent>
       </Sheet>
@@ -153,10 +166,12 @@ const Header = () => {
           <span className="sr-only">Toggle theme</span>
         </Button>
         {cart ? (
-          <Button variant="outline" className="flex gap-2">
+          <Link to={'/checkout'}>
+          <Button  variant="outline" className="flex gap-2">
             <ShoppingCart className="h-[1.2rem] w-[1.2rem]" />
             <span className="text-base font-light">{cart.length}</span>
           </Button>
+          </Link>
         ) : (
           <></>
         )}
