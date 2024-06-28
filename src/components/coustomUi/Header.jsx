@@ -26,7 +26,7 @@ import { AuthContext } from "@/auth/AuthProvider";
 import DynamicBreadcrumb from "./BreadCrumb";
 import { FaCircleUser } from "react-icons/fa6";
 import { useTheme } from "@/utility/ThemeProvider";
-import { getFromCart } from "@/utility/addToCart";
+import { getFromCart } from "@/utility/cartUtils";
 
 const Header = () => {
   const [cart, setCart] = useState();

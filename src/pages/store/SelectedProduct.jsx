@@ -14,7 +14,7 @@ import { ChevronLeft, ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import QuantitySelector from "@/components/coustomUi/QuantitySelector";
-import { addToCart } from "@/utility/addToCart";
+import { addToCart } from "@/utility/cartUtils";
 import { PhotoCarousel } from "@/components/coustomUi/PhotoCarousel";
 
 const SelectedProduct = () => {
@@ -25,9 +25,9 @@ const SelectedProduct = () => {
   const navigate = useNavigate();
 
   const buyProduct = (product) => {
-    addToCart(product)
-    navigate('/checkout')
-  }
+    addToCart(product);
+    navigate("/checkout");
+  };
 
   return (
     <section className="mx-auto w-full max-w-[80rem] p-4">
@@ -86,7 +86,7 @@ const SelectedProduct = () => {
               <ShoppingCart size={18} />
               <h1>Add to cart</h1>
             </Button>
-            <Button onClick={()=>buyProduct(product)}  className="w-full">
+            <Button onClick={() => buyProduct(product)} className="w-full">
               <h1>Buy now</h1>
             </Button>
           </CardFooter>

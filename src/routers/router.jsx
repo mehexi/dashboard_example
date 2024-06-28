@@ -1,22 +1,26 @@
+import { lazy, Suspense } from "react";
+import { createBrowserRouter } from "react-router-dom";
 import App from "@/App";
-import Login from "@/pages/loging/Loging";
-import SignUp from "@/pages/signUp/SignUp";
-import { createBrowserRouter, redirect } from "react-router-dom";
 import PrivetRoutes from "./PrivetRoutes";
-import Products from "@/pages/products/Products";
-import ProductsAdd from "@/pages/products/ProductsAdd";
 import axiosInstance from "@/axios/AxiosIntence";
-import ProductsEdit from "@/pages/products/ProductsEdit";
-import User from "@/pages/user/User";
-import UserView from "@/pages/user/userUi/UserView";
-import CurrentUser from "@/pages/user/userUi/CurrentUser";
-import SelectedUser from "@/pages/user/SelectedUser";
-import SelectedProducts from "@/pages/products/SelectedProducts";
-import Order from "@/pages/order/Order";
-import Store from "@/pages/store/Store";
-import SelectedProduct from "@/pages/store/SelectedProduct";
-import Checkout from "@/pages/checkout/Checkout";
-import { getFromCart } from "@/utility/addToCart";
+import { getFromCart } from "@/utility/cartUtils";
+import Loading from "@/components/coustomUi/Loading";
+
+
+// Lazy load components
+const Login = lazy(() => import("@/pages/loging/Loging"));
+const SignUp = lazy(() => import("@/pages/signUp/SignUp"));
+const Products = lazy(() => import("@/pages/products/Products"));
+const ProductsAdd = lazy(() => import("@/pages/products/ProductsAdd"));
+const ProductsEdit = lazy(() => import("@/pages/products/ProductsEdit"));
+const User = lazy(() => import("@/pages/user/User"));
+const UserView = lazy(() => import("@/pages/user/userUi/UserView"));
+const SelectedUser = lazy(() => import("@/pages/user/SelectedUser"));
+const SelectedProducts = lazy(() => import("@/pages/products/SelectedProducts"));
+const Order = lazy(() => import("@/pages/order/Order"));
+const Store = lazy(() => import("@/pages/store/Store"));
+const SelectedProduct = lazy(() => import("@/pages/store/SelectedProduct"));
+const Checkout = lazy(() => import("@/pages/checkout/Checkout"));
 
 const router = createBrowserRouter([
   {
@@ -25,11 +29,11 @@ const router = createBrowserRouter([
     children: [
       {
         path: "",
-        element: <Store/>
+        element: <Suspense fallback={<Loading />}><Store/></Suspense>
       },
       {
         path: '/:id',
-        element: <SelectedProduct />,
+        element: <Suspense fallback={<Loading />}><SelectedProduct /></Suspense>,
         loader: ({params}) => axiosInstance(`/client/products/${params.id}`)
       }
     ]
@@ -40,24 +44,23 @@ const router = createBrowserRouter([
     children: [
       {
         path: '',
-        element: <Checkout />,
+        element: <Suspense fallback={<Loading />}><Checkout /></Suspense>,
         loader: getFromCart
       }
     ]
   },
   {
     path: "/login",
-    element: <Login />,
+    element: <Suspense fallback={<Loading />}><Login /></Suspense>,
   },
   {
     path: "/signUp",
-    element: <SignUp />,
+    element: <Suspense fallback={<Loading />}><SignUp /></Suspense>,
   },
   {
     path: "/dashboard",
     element: (
       <PrivetRoutes>
-        {" "}
         <App />
       </PrivetRoutes>
     ),
@@ -82,7 +85,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "",
-        element: <Order/>,
+        element: <Suspense fallback={<Loading />}><Order/></Suspense>,
       },
     ],
   },
@@ -96,20 +99,20 @@ const router = createBrowserRouter([
     children: [
       {
         path: "",
-        element: <Products />,
+        element: <Suspense fallback={<Loading />}><Products /></Suspense>,
       },
       {
         path: ':id',
-        element: <SelectedProducts />,
+        element: <Suspense fallback={<Loading />}><SelectedProducts /></Suspense>,
         loader: ({params}) => axiosInstance(`/client/products/${params.id}`)
       },
       {
         path: "add",
-        element: <ProductsAdd />,
+        element: <Suspense fallback={<Loading />}><ProductsAdd /></Suspense>,
       },
       {
         path: "edit/:id",
-        element: <ProductsEdit />,
+        element: <Suspense fallback={<Loading />}><ProductsEdit /></Suspense>,
         loader: ({ params }) => axiosInstance(`/client/products/${params.id}`),
       },
     ],
@@ -124,15 +127,15 @@ const router = createBrowserRouter([
     children: [
       {
         path: "",
-        element: <User />,
+        element: <Suspense fallback={<Loading />}><User /></Suspense>,
         children: [
           {
             path: "",
-            element: <UserView />,
+            element: <Suspense fallback={<Loading />}><UserView /></Suspense>,
           },
           {
             path: ":id",
-            element: <SelectedUser />,
+            element: <Suspense fallback={<Loading />}><SelectedUser /></Suspense>,
             loader: async ({ params }) => {
               const response = await axiosInstance.get(
                 `/general/users/${params.id}`

@@ -1,12 +1,12 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import ItemCard from './ItemCard';
 
 const CartItems = ({ data, onCartUpdate }) => {
     const [cartData, setCartData] = useState(data);
 
-    const handleQuantityChange = (itemId, newQuantity) => {
+    const handleQuantityChange = useCallback((itemId, newQuantity) => {
         const updatedCartData = cartData.map(item => {
             if (item._id === itemId) {
                 return { ...item, quantity: newQuantity };
@@ -15,14 +15,20 @@ const CartItems = ({ data, onCartUpdate }) => {
         });
         setCartData(updatedCartData);
         onCartUpdate(updatedCartData);
-    };
+    }, [cartData, onCartUpdate]);
+
+    const handleDelete = useCallback((itemId) => {
+        const updatedCartData = cartData.filter(item => item._id !== itemId);
+        setCartData(updatedCartData);
+        onCartUpdate(updatedCartData);
+    }, [cartData, onCartUpdate]);
 
     useEffect(() => {
         setCartData(data);
     }, [data]);
 
-    return (
-        <Card className="col-span-5">
+  return (
+        <Card>
           <CardHeader>
             <CardTitle>Cart</CardTitle>
             <CardDescription>{cartData.length} items</CardDescription>
@@ -39,11 +45,17 @@ const CartItems = ({ data, onCartUpdate }) => {
                 </TableRow>
               </TableHeader>
               {cartData.map((item) => (
-                <ItemCard item={item} key={item._id} onQuantityChange={handleQuantityChange} />
+                <ItemCard 
+                  item={item} 
+                  key={item._id} 
+                  onQuantityChange={handleQuantityChange} 
+                  onDelete={handleDelete} 
+                />
               ))}
             </Table>
           </CardContent>
-        </Card>
+      </Card>
+
     );
 };
 

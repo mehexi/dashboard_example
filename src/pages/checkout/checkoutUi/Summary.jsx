@@ -1,3 +1,4 @@
+import axiosInstance from "@/axios/AxiosIntence";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -13,27 +14,53 @@ import React, { useEffect, useState } from "react";
 
 const Summary = ({ cartData }) => {
   const [subtotal, setSubtotal] = useState(0);
-  const [discount, setDiscount] = useState(5); // Set discount as percentage
+  const [vouchers, setVouchers] = useState([]);
+  const [discount, setDiscount] = useState(0);
   const [total, setTotal] = useState(0);
+  const [discountCode, setDiscountCode] = useState("DISCOUNT5");
+  const [voucherError, setVoucherError] = useState("");
 
-  // Static shipping cost (example: $10.00)
   const shippingCost = 10.0;
 
   useEffect(() => {
-    // Calculate Subtotal
+    const fetchVouchers = async () => {
+      try {
+        const response = await axiosInstance("/vouchers");
+        setVouchers(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchVouchers();
+  }, []);
+
+  useEffect(() => {
     const newSubtotal = cartData.reduce(
       (acc, item) => acc + item.price * item.quantity,
       0
     );
     setSubtotal(newSubtotal);
 
-    // Calculate discount amount
     const discountAmount = (newSubtotal * discount) / 100;
 
-    // Calculate Total
     const newTotal = newSubtotal + shippingCost - discountAmount;
     setTotal(newTotal);
   }, [cartData, discount]);
+
+  const applyDiscount = () => {
+    const currentDate = new Date();
+    const voucher = vouchers.find(
+      (v) => v.code === discountCode && new Date(v.expiry_date) >= currentDate
+    );
+
+    if (voucher) {
+      setDiscount(voucher.discount);
+      setVoucherError("");
+    } else {
+      setDiscount(0);
+      setVoucherError("Invalid or expired voucher code.");
+    }
+  };
 
   return (
     <Card className="col-span-2 h-fit">
@@ -80,14 +107,23 @@ const Summary = ({ cartData }) => {
         </Table>
         <Separator />
         <div className="relative mt-5">
-          <Input type="text" defaultValue="DISCOUNT5" className="px-4 py-8" />
+          <Input
+            type="text"
+            value={discountCode}
+            onChange={(e) => setDiscountCode(e.target.value)}
+            className="px-4 py-8"
+          />
           <Button
             variant=""
             className="absolute top-1/2 -translate-y-1/2 right-5"
+            onClick={applyDiscount}
           >
             Apply
           </Button>
         </div>
+        {voucherError && (
+          <div className="text-red-500 mt-2">{voucherError}</div>
+        )}
       </CardContent>
       <CardFooter>
         <Button className="w-full">Check it out</Button>

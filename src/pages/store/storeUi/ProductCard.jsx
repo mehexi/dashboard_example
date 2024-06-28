@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import config from "@/config";
 import { ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { addToCart } from "@/utility/addToCart";
+import { addToCart } from "@/utility/cartUtils";
 import { Link } from "react-router-dom";
 
 const ProductCard = ({ data }) => {
