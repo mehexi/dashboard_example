@@ -5,6 +5,7 @@ import PrivetRoutes from "./PrivetRoutes";
 import axiosInstance from "@/axios/AxiosIntence";
 import { getFromCart } from "@/utility/cartUtils";
 import Loading from "@/components/coustomUi/Loading";
+import Step2 from "@/pages/checkout/checkoutUi/Step2";
 
 
 // Lazy load components
@@ -45,7 +46,17 @@ const router = createBrowserRouter([
       {
         path: '',
         element: <Suspense fallback={<Loading />}><Checkout /></Suspense>,
-        loader: getFromCart
+        loader: getFromCart,
+        children: [
+          {
+            path: 'step2',
+            element: <Suspense fallback={<Loading />}><Step2/></Suspense>,
+          },
+          {
+            path: 'step3',
+            element: <Suspense fallback={<Loading />}><h1>step 3</h1></Suspense>,
+          },   
+        ]
       }
     ]
   },

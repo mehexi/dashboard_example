@@ -11,16 +11,18 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Table, TableCell, TableRow } from "@/components/ui/table";
 import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
-const Summary = ({ cartData }) => {
+const Summary = ({ cartData, userLocation }) => {
   const [subtotal, setSubtotal] = useState(0);
   const [vouchers, setVouchers] = useState([]);
   const [discount, setDiscount] = useState(0);
   const [total, setTotal] = useState(0);
-  const [discountCode, setDiscountCode] = useState("DISCOUNT5");
+  const [discountCode, setDiscountCode] = useState("");
   const [voucherError, setVoucherError] = useState("");
 
   const shippingCost = 10.0;
+  const location = useLocation();
 
   useEffect(() => {
     const fetchVouchers = async () => {
@@ -62,73 +64,102 @@ const Summary = ({ cartData }) => {
     }
   };
 
+  const isStep2 = location.pathname.includes("step2");
+  const isStep3 = location.pathname.includes("step3");
+  const navigate = useNavigate();
+
+  console.log(userLocation);
+
   return (
-    <Card className="col-span-2 h-fit">
-      <CardHeader>
-        <CardTitle>Order Summary</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <Table>
-          <TableRow className="border-none">
-            <TableCell className="text-[#637381] dark:text-[#919EAB]">
-              Subtotal
-            </TableCell>
-            <TableCell className="text-right font-bold">
-              ${subtotal.toFixed(2)}
-            </TableCell>
-          </TableRow>
-          <TableRow className="border-none">
-            <TableCell className="text-[#637381] dark:text-[#919EAB]">
-              Discount
-            </TableCell>
-            <TableCell className="text-right font-bold">
-              -${((subtotal * discount) / 100).toFixed(2)}
-            </TableCell>
-          </TableRow>
-          <TableRow className="border-none">
-            <TableCell className="text-[#637381] dark:text-[#919EAB]">
-              Shipping
-            </TableCell>
-            <TableCell className="text-right font-bold">
-              ${shippingCost.toFixed(2)}
-            </TableCell>
-          </TableRow>
-        </Table>
-        <Separator />
-        <Table>
-          <TableRow className="border-none">
-            <TableCell className="text-[#637381] dark:text-[#919EAB]">
-              Total
-            </TableCell>
-            <TableCell className="text-right font-bold">
-              ${total.toFixed(2)}
-            </TableCell>
-          </TableRow>
-        </Table>
-        <Separator />
-        <div className="relative mt-5">
-          <Input
-            type="text"
-            value={discountCode}
-            onChange={(e) => setDiscountCode(e.target.value)}
-            className="px-4 py-8"
-          />
-          <Button
-            variant=""
-            className="absolute top-1/2 -translate-y-1/2 right-5"
-            onClick={applyDiscount}
-          >
-            Apply
-          </Button>
-        </div>
-        {voucherError && (
-          <div className="text-red-500 mt-2">{voucherError}</div>
+    <div className="col-span-2 h-fit">
+      {userLocation === null ? null : (
+        <Card className="bg-primary-foreground">
+          <CardHeader>
+            <CardTitle>Address</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <h1>{userLocation.fullName} <span className="text-muted-foreground">({userLocation.addressType})</span></h1>
+            <h1 className="text-muted-foreground">{userLocation.address} , {userLocation.city} , {userLocation.selectedCountry} [{userLocation.zipCode}]</h1>
+            <h1 className="text-muted-foreground">+{userLocation.phone}</h1>
+          </CardContent>
+        </Card>
+      )}
+      <Card className='bg-primary-foreground mt-4'>
+        <CardHeader>
+          <CardTitle>Order Summary</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Table>
+            <TableRow className="border-none">
+              <TableCell className="text-[#637381] dark:text-[#919EAB]">
+                Subtotal
+              </TableCell>
+              <TableCell className="text-right font-bold">
+                ${subtotal.toFixed(2)}
+              </TableCell>
+            </TableRow>
+            <TableRow className="border-none">
+              <TableCell className="text-[#637381] dark:text-[#919EAB]">
+                Discount
+              </TableCell>
+              <TableCell className="text-right font-bold">
+                -${((subtotal * discount) / 100).toFixed(2)}
+              </TableCell>
+            </TableRow>
+            <TableRow className="border-none">
+              <TableCell className="text-[#637381] dark:text-[#919EAB]">
+                Shipping
+              </TableCell>
+              <TableCell className="text-right font-bold">
+                ${shippingCost.toFixed(2)}
+              </TableCell>
+            </TableRow>
+          </Table>
+          <Separator />
+          <Table>
+            <TableRow className="border-none">
+              <TableCell className="text-[#637381] dark:text-[#919EAB]">
+                Total
+              </TableCell>
+              <TableCell className="text-right font-bold">
+                ${total.toFixed(2)}
+              </TableCell>
+            </TableRow>
+          </Table>
+          <Separator />
+          {!isStep2 && !isStep3 && (
+            <>
+              <div className="relative mt-5">
+                <Input
+                  type="text"
+                  value={discountCode}
+                  placeHolder="Promo code here"
+                  onChange={(e) => setDiscountCode(e.target.value)}
+                  className="px-4 py-8"
+                />
+                <Button
+                  variant=""
+                  className="absolute top-1/2 -translate-y-1/2 right-5"
+                  onClick={applyDiscount}
+                >
+                  Apply
+                </Button>
+              </div>
+              {voucherError && (
+                <div className="text-red-500 mt-2">{voucherError}</div>
+              )}
+            </>
+          )}
+        </CardContent>
+        {!isStep2 && !isStep3 && (
+          <CardFooter>
+            <Button onClick={() => navigate("step2")} className="w-full">
+              Check it out
+            </Button>
+          </CardFooter>
         )}
-      </CardContent>
-      <CardFooter>
-        <Button className="w-full">Check it out</Button>
-      </CardFooter>
-    </Card>
+      </Card>
+    </div>
   );
 };
 

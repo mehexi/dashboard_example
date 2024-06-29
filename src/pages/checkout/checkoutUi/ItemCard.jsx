@@ -4,7 +4,6 @@ import { TableCell, TableRow } from "@/components/ui/table";
 import config from "@/config";
 import { Trash2 } from "lucide-react";
 import React, { useEffect, useState, useCallback } from "react";
-
 import QuantitySelector from "@/components/coustomUi/QuantitySelector";
 import { removeFromCart } from "@/utility/cartUtils";
 

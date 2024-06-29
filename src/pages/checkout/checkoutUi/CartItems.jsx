@@ -28,7 +28,7 @@ const CartItems = ({ data, onCartUpdate }) => {
     }, [data]);
 
   return (
-        <Card>
+        <Card className='bg-primary-foreground'>
           <CardHeader>
             <CardTitle>Cart</CardTitle>
             <CardDescription>{cartData.length} items</CardDescription>
@@ -54,7 +54,7 @@ const CartItems = ({ data, onCartUpdate }) => {
               ))}
             </Table>
           </CardContent>
-      </Card>
+      </Card >
 
     );
 };
