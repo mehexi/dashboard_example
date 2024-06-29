@@ -1,3 +1,4 @@
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -8,6 +9,7 @@ import {
 } from "@/components/ui/card";
 import { Trash2 } from "lucide-react";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const LocationCard = ({ data, onDelete, setLocation }) => {
   const {
@@ -22,6 +24,8 @@ const LocationCard = ({ data, onDelete, setLocation }) => {
     zipCode,
   } = data;
 
+  const navigate = useNavigate()
+
   return (
     <Card className="w-full col-span-4 bg-primary-foreground">
       <CardHeader>
@@ -30,9 +34,9 @@ const LocationCard = ({ data, onDelete, setLocation }) => {
             {fullName} ({addressType})
           </CardTitle>
           {useAsDefault && (
-            <div className="px-2 py-1 border rounded-full text-xs bg-secondary">
+            <Badge variant="outline">
               Default
-            </div>
+            </Badge>
           )}
         </div>
       </CardHeader>
@@ -56,6 +60,7 @@ const LocationCard = ({ data, onDelete, setLocation }) => {
           <Button
             onClick={() => {
               setLocation(data);
+              navigate('/checkout/step3')
             }}
             variant="outline"
           >

@@ -13,15 +13,14 @@ import { Table, TableCell, TableRow } from "@/components/ui/table";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-const Summary = ({ cartData, userLocation }) => {
+const Summary = ({ cartData, userLocation,shippingCost }) => {
   const [subtotal, setSubtotal] = useState(0);
   const [vouchers, setVouchers] = useState([]);
   const [discount, setDiscount] = useState(0);
   const [total, setTotal] = useState(0);
   const [discountCode, setDiscountCode] = useState("");
   const [voucherError, setVoucherError] = useState("");
-
-  const shippingCost = 10.0;
+  
   const location = useLocation();
 
   useEffect(() => {
@@ -47,7 +46,7 @@ const Summary = ({ cartData, userLocation }) => {
 
     const newTotal = newSubtotal + shippingCost - discountAmount;
     setTotal(newTotal);
-  }, [cartData, discount]);
+  }, [cartData, discount,shippingCost]);
 
   const applyDiscount = () => {
     const currentDate = new Date();
@@ -71,8 +70,8 @@ const Summary = ({ cartData, userLocation }) => {
   console.log(userLocation);
 
   return (
-    <div className="col-span-2 h-fit">
-      {userLocation === null ? null : (
+    <div className="col-span-2 h-fit flex flex-col gap-4">
+    {isStep3 && userLocation && (
         <Card className="bg-primary-foreground">
           <CardHeader>
             <CardTitle>Address</CardTitle>
@@ -80,11 +79,11 @@ const Summary = ({ cartData, userLocation }) => {
           <CardContent>
             <h1>{userLocation.fullName} <span className="text-muted-foreground">({userLocation.addressType})</span></h1>
             <h1 className="text-muted-foreground">{userLocation.address} , {userLocation.city} , {userLocation.selectedCountry} [{userLocation.zipCode}]</h1>
-            <h1 className="text-muted-foreground">+{userLocation.phone}</h1>
+            <h1 className="text-muted-foreground">{userLocation.phone}</h1>
           </CardContent>
         </Card>
-      )}
-      <Card className='bg-primary-foreground mt-4'>
+      )}  
+      <Card className='bg-primary-foreground'>
         <CardHeader>
           <CardTitle>Order Summary</CardTitle>
         </CardHeader>
@@ -111,7 +110,7 @@ const Summary = ({ cartData, userLocation }) => {
                 Shipping
               </TableCell>
               <TableCell className="text-right font-bold">
-                ${shippingCost.toFixed(2)}
+                ${shippingCost}
               </TableCell>
             </TableRow>
           </Table>
@@ -121,7 +120,7 @@ const Summary = ({ cartData, userLocation }) => {
               <TableCell className="text-[#637381] dark:text-[#919EAB]">
                 Total
               </TableCell>
-              <TableCell className="text-right font-bold">
+              <TableCell className="text-right font-bold text-xl text-red-400">
                 ${total.toFixed(2)}
               </TableCell>
             </TableRow>
@@ -159,6 +158,11 @@ const Summary = ({ cartData, userLocation }) => {
           </CardFooter>
         )}
       </Card>
+      {
+        isStep3 && (
+          <Button>Complete Order</Button>
+        )
+      }
     </div>
   );
 };

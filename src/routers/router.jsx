@@ -6,6 +6,7 @@ import axiosInstance from "@/axios/AxiosIntence";
 import { getFromCart } from "@/utility/cartUtils";
 import Loading from "@/components/coustomUi/Loading";
 import Step2 from "@/pages/checkout/checkoutUi/Step2";
+import Step3 from "@/pages/checkout/checkoutUi/Step3";
 
 
 // Lazy load components
@@ -54,7 +55,7 @@ const router = createBrowserRouter([
           },
           {
             path: 'step3',
-            element: <Suspense fallback={<Loading />}><h1>step 3</h1></Suspense>,
+            element: <Suspense fallback={<Loading />}><Step3/></Suspense>,
           },   
         ]
       }

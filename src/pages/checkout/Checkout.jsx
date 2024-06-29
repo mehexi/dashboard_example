@@ -1,7 +1,7 @@
 // src/pages/checkout/Checkout.jsx
 
 import { useLoaderData, useNavigate, Outlet, useLocation } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft } from "lucide-react";
 import CartItems from "./checkoutUi/CartItems";
@@ -11,16 +11,31 @@ const Checkout = () => {
   const data = useLoaderData();
   const [cartData, setCartData] = useState(data);
   const [location, setLocation] = useState(null);
+  const [shippingCost,setShippingConst] = useState('')
   
   const navigate = useNavigate();
-  const window = useLocation();
+  const windowLocation = useLocation();
+
+  // Load location from localStorage on mount
+  useEffect(() => {
+    const savedLocation = JSON.parse(localStorage.getItem("location"));
+    if (savedLocation) {
+      setLocation(savedLocation);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (location) {
+      localStorage.setItem("location", JSON.stringify(location));
+    }
+  }, [location]);
 
   const handleCartUpdate = (updatedCartData) => {
     setCartData(updatedCartData);
   };
 
-  const isStep2 = window.pathname.includes("step2");
-  const isStep3 = window.pathname.includes("step3");
+  const isStep2 = windowLocation.pathname.includes("step2");
+  const isStep3 = windowLocation.pathname.includes("step3");
 
   return (
     <section className="mx-auto w-full max-w-[80rem] p-4 sm:p-6 lg:p-8">
@@ -42,10 +57,10 @@ const Checkout = () => {
               </div>
             </>
           )}
-          <Outlet context={{ cartData, handleCartUpdate, location, setLocation }} />
+          <Outlet context={{ cartData, handleCartUpdate, location, setLocation,setShippingConst}} />
         </div>
         <div className="col-span-1 lg:col-span-2">
-          <Summary cartData={cartData} userLocation={location} />
+          <Summary cartData={cartData} userLocation={location} shippingCost={shippingCost} />
         </div>
       </div>
     </section>
