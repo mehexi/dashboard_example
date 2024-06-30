@@ -1,3 +1,4 @@
+import { AuthContext } from "@/auth/AuthProvider";
 import axiosInstance from "@/axios/AxiosIntence";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,26 +11,27 @@ import {
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Table, TableCell, TableRow } from "@/components/ui/table";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-const Summary = ({ cartData, userLocation,shippingCost }) => {
+const Summary = ({ cartData, userLocation, shippingCost }) => {
   const [subtotal, setSubtotal] = useState(0);
   const [vouchers, setVouchers] = useState([]);
   const [discount, setDiscount] = useState(0);
   const [total, setTotal] = useState(0);
   const [discountCode, setDiscountCode] = useState("");
   const [voucherError, setVoucherError] = useState("");
-  console.log(shippingCost)
+  const { user } = useContext(AuthContext);
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchVouchers = async () => {
       try {
-        const response = await axiosInstance("/vouchers");
+        const response = await axiosInstance.get("/vouchers");
         setVouchers(response.data);
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     };
     fetchVouchers();
@@ -43,10 +45,9 @@ const Summary = ({ cartData, userLocation,shippingCost }) => {
     setSubtotal(newSubtotal);
 
     const discountAmount = (newSubtotal * discount) / 100;
-
     const newTotal = newSubtotal + shippingCost - discountAmount;
     setTotal(newTotal);
-  }, [cartData, discount,shippingCost]);
+  }, [cartData, discount, shippingCost]);
 
   const applyDiscount = () => {
     const currentDate = new Date();
@@ -63,24 +64,62 @@ const Summary = ({ cartData, userLocation,shippingCost }) => {
     }
   };
 
+  //add order to database
+  const handleOrderData = async () => {
+    try {
+      const userId = localStorage.getItem('uID');
+      
+      const products = cartData.map(item => ({
+        productID: item._id,       
+        quantity: item.quantity,   
+        totalPrice: item.totalPrice
+      }));
+  
+      const location = {
+        addressType: userLocation.addressType,
+        address: userLocation.address,
+        city: userLocation.city,
+        state: userLocation.state,
+        zipCode: userLocation.zipCode,
+        selectedCountry: userLocation.selectedCountry
+      };
+  
+      // Prepare orderData object
+      const orderData = {
+        userId,
+        cost: total,
+        products,
+        location
+      };
+
+      console.log(orderData)
+  
+      const response = await axiosInstance.post('/sales', orderData);
+      console.log('Order added successfully:', response.data);
+      
+    } catch (error) {
+      console.error('Error adding order:', error);
+    }
+  };
+  
+
   const isStep2 = location.pathname.includes("step2");
   const isStep3 = location.pathname.includes("step3");
-  const navigate = useNavigate();
 
   return (
     <div className="col-span-2 h-fit flex flex-col gap-4">
-    {isStep3 && userLocation && (
+      {isStep3 && userLocation && (
         <Card className="bg-primary-foreground">
           <CardHeader>
             <CardTitle>Address</CardTitle>
           </CardHeader>
           <CardContent>
             <h1>{userLocation.fullName} <span className="text-muted-foreground">({userLocation.addressType})</span></h1>
-            <h1 className="text-muted-foreground">{userLocation.address} , {userLocation.city} , {userLocation.selectedCountry} [{userLocation.zipCode}]</h1>
+            <h1 className="text-muted-foreground">{userLocation.address}, {userLocation.city}, {userLocation.selectedCountry} [{userLocation.zipCode}]</h1>
             <h1 className="text-muted-foreground">{userLocation.phone}</h1>
           </CardContent>
         </Card>
-      )}  
+      )}
       <Card className='bg-primary-foreground'>
         <CardHeader>
           <CardTitle>Order Summary</CardTitle>
@@ -108,7 +147,7 @@ const Summary = ({ cartData, userLocation,shippingCost }) => {
                 Shipping
               </TableCell>
               <TableCell className="text-right font-bold">
-                ${shippingCost}
+                ${shippingCost.toFixed(2)}
               </TableCell>
             </TableRow>
           </Table>
@@ -130,12 +169,11 @@ const Summary = ({ cartData, userLocation,shippingCost }) => {
                 <Input
                   type="text"
                   value={discountCode}
-                  placeHolder="Promo code here"
+                  placeholder="Promo code here"
                   onChange={(e) => setDiscountCode(e.target.value)}
                   className="px-4 py-8"
                 />
                 <Button
-                  variant=""
                   className="absolute top-1/2 -translate-y-1/2 right-5"
                   onClick={applyDiscount}
                 >
@@ -156,11 +194,9 @@ const Summary = ({ cartData, userLocation,shippingCost }) => {
           </CardFooter>
         )}
       </Card>
-      {
-        isStep3 && (
-          <Button>Complete Order</Button>
-        )
-      }
+      {isStep3 && (
+        <Button onClick={handleOrderData}>Complete Order</Button>
+      )}
     </div>
   );
 };

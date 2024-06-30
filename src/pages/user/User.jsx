@@ -5,11 +5,12 @@ import { Outlet } from "react-router-dom";
 
 const User = () => {
   const { user } = useContext(AuthContext);
-
+  
+  console.log(user)
+  
   if (!user) {
     return <h1>loading</h1>
   }
-  console.log(user)
 
   return (
     <section className=" flex flex-col gap-4">

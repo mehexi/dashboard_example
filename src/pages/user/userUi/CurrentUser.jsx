@@ -8,7 +8,7 @@ import {
 import { DollarSign } from "lucide-react";
 
 const CurrentUser = ({ user }) => {
-  const { displayName, email } = user;
+  const { name, email } = user;
   
   if (!user) {
     return <div>Loading...</div>;
@@ -17,7 +17,7 @@ const CurrentUser = ({ user }) => {
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle>{displayName}</CardTitle>
+        <CardTitle>{name}</CardTitle>
         <DollarSign className="h-4 w-4 text-muted-foreground" />
       </CardHeader>
       <CardContent>

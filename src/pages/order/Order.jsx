@@ -1,5 +1,4 @@
 import axiosInstance from "@/axios/AxiosIntence";
-import TableData from "@/components/coustomUi/TableData";
 import {
   Card,
   CardContent,
@@ -14,11 +13,11 @@ import OrderList from "./orderUi/OrderList";
 import PaginationComp from "@/components/coustomUi/Pagination";
 
 const Order = () => {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState();
   const [filter, setFilter] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalItems, setTotalItems] = useState(0);
-  const pageSize = 10; // Number of items per page
+  const pageSize = 10;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -43,7 +42,7 @@ const Order = () => {
 
   const handleTabChange = (value) => {
     setFilter(value);
-    setCurrentPage(1); // Reset to first page when filter changes
+    setCurrentPage(1);
   };
 
   const handlePageChange = (page) => {
@@ -54,7 +53,7 @@ const Order = () => {
     return <h1>Loading...</h1>;
   }
 
-  console.log(data)
+  console.log(data.orders,'data')
 
   return (
     <section className="flex flex-col gap-4">
@@ -73,12 +72,12 @@ const Order = () => {
           </TabsList>
         </Tabs>
       </div>
-      <Card>
+      <Card className='bg-primary-foreground'>
         <CardHeader>
           <div>
             <CardTitle>List of Orders</CardTitle>
             <CardDescription>
-              Showing {data.length} out of {totalItems}
+              Showing {data.orders.length} out of {totalItems}
             </CardDescription>
           </div>
         </CardHeader>

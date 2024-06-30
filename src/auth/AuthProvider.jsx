@@ -48,7 +48,22 @@ const AuthProvider = ({ children }) => {
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
       if (user) {
-        setUser(user);
+        const { displayName, email, phoneNumber, photoURL } = user;
+        
+        const userData = {
+          name: displayName,
+          email,
+          city: null,
+          state: null,
+          country: null,
+          occupation: null,
+          phoneNumber: phoneNumber || null,
+          transactions: [],
+          role: "user",
+          photoURL
+        };
+
+        setUser(userData);
       } else {
         setUser(null);
       }

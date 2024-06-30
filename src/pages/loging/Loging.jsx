@@ -22,12 +22,32 @@ const Login = () => {
     signInWithGoogle()
       .then((result) => {
         console.log("User signed in", result.user);
-        handleSetUser(result.user.reloadUserInfo)
-        setToken(result.user.accessToken)
-        navigate('/dashboard')
+        const { displayName, email, phoneNumber, photoURL } = result.user;
+  
+        const userData = {
+          name: displayName,
+          password: 'default', // Assign a default password for Google users
+          email,
+          city: null,
+          state: null,
+          country: null,
+          occupation: null,
+          phoneNumber: phoneNumber || null,
+          role: "user",
+          photoURL
+        };
+  
+        axiosInstance.post('/signUp/google', userData)
+          .then((res) => {
+            console.log(res.data);
+            handleSetUser(res.data.user);
+            setToken(res.data.token);
+            navigate('/dashboard');
+          })
+          .catch((error) => console.error("Error", error));
       })
       .catch((error) => {
-        console.log("Error", error);
+        console.error("Error", error);
       });
   };
 

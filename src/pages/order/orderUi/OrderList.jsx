@@ -17,11 +17,11 @@ const OrderList = ({ data }) => {
 
   const orders = data?.orders;
   if (!orders) {
-    return <h1>loading</h1>;
+    return <h1>Loading...</h1>;
   }
 
   const toggleDetails = (e, orderId) => {
-    e.stopPropagation(); // Prevent event bubbling
+    e.stopPropagation();
     setExpandedOrderId(expandedOrderId === orderId ? null : orderId);
   };
 
@@ -47,7 +47,7 @@ const OrderList = ({ data }) => {
               <TableCell>
                 {order.userId.name} <br /> {order.userId.email}
               </TableCell>
-              <TableCell> <span>{order.orderStat}</span></TableCell>
+              <TableCell><span>{order.orderStat}</span></TableCell>
               <TableCell>{order.products.length}</TableCell>
               <TableCell className="text-right">{order.cost}</TableCell>
               <TableCell className="text-right">
@@ -81,17 +81,19 @@ const OrderList = ({ data }) => {
                         <TableRow key={index}>
                           <TableCell>
                             <div className="flex gap-3 justify-start items-center">
-                              <img
-                                src={`${config.API_BASE_URL}${product.images[0]}`}
-                                alt="product"
-                                className="w-12 h-12 rounded-lg object-cover"
-                              />
-                              <h1>{product.name}</h1>
+                              {product.productID.images && product.productID.images[0] && (
+                                <img
+                                  src={`${config.API_BASE_URL}${product.productID.images[0]}`}
+                                  alt="product"
+                                  className="w-12 h-12 rounded-lg object-cover"
+                                />
+                              )}
+                              <h1>{product.productID.name}</h1>
                             </div>
                           </TableCell>
-                          <TableCell colSpan={1} className='capitalize'>{product.status}</TableCell>
+                          <TableCell colSpan={1} className='capitalize'>{product.productID.status}</TableCell>
                           <TableCell colSpan={1} className="text-right">
-                            {product.price}
+                            {product.productID.price}
                           </TableCell>
                         </TableRow>
                       ))}

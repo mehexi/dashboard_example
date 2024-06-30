@@ -7,6 +7,7 @@ import { getFromCart } from "@/utility/cartUtils";
 import Loading from "@/components/coustomUi/Loading";
 import Step2 from "@/pages/checkout/checkoutUi/Step2";
 import Step3 from "@/pages/checkout/checkoutUi/Step3";
+import Dashboard from "@/pages/dashboard/Dashboard";
 
 
 // Lazy load components
@@ -79,7 +80,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "",
-        element: <h1>dashboard</h1>,
+        element: <Dashboard/>
       },
       {
         path: "add",

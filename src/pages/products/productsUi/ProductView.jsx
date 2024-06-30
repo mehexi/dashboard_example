@@ -160,7 +160,7 @@ const ProductView = forwardRef((props, ref) => {
   }
 
   return (
-    <Card>
+    <Card className='bg-primary-foreground'>
       <CardHeader className="flex flex-row justify-between">
         <div className="flex flex-col gap-3">
           <CardTitle>Product</CardTitle>

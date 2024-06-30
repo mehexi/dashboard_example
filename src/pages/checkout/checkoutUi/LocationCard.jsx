@@ -25,6 +25,7 @@ const LocationCard = ({ data, onDelete, setLocation }) => {
   } = data;
 
   const navigate = useNavigate()
+  console.log(data)
 
   return (
     <Card className="w-full col-span-4 bg-primary-foreground">
