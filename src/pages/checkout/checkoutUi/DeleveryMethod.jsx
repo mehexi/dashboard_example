@@ -48,7 +48,7 @@ const DeliveryMethod = ({setShippingConst}) => {
                 className={`cursor-pointer
                             ${
                               selectedDelivery.label === option.label
-                                ? "bg-secondary"
+                                ? "border-blue-500"
                                 : ""
                             }`}
                 onClick={() => handleDeliveryChange(option)}

@@ -30,8 +30,12 @@ const DynamicBreadcrumb = ({ menuItems }) => {
   const location = useLocation();
   const breadcrumbItems = getBreadcrumbItems(menuItems, location.pathname);
 
+  if (!menuItems || !location.pathname) {
+    return null; // Or a fallback UI
+  }
+
   return (
-    <Breadcrumb className="hidden md:flex uppercase">
+    <Breadcrumb aria-label="Breadcrumb" className="hidden md:flex uppercase">
       <BreadcrumbList>
         {breadcrumbItems.map((item, index) => {
           const isCurrentPage = item.href === location.pathname;
@@ -39,10 +43,10 @@ const DynamicBreadcrumb = ({ menuItems }) => {
             <React.Fragment key={index}>
               <BreadcrumbItem>
                 {isCurrentPage ? (
-                  <BreadcrumbPage>{item.label}</BreadcrumbPage>
+                  <BreadcrumbPage aria-current="page">{item.label}</BreadcrumbPage>
                 ) : (
                   <BreadcrumbLink asChild>
-                    <h1>{item.label}</h1>
+                    <Link to={item.href}>{item.label}</Link>
                   </BreadcrumbLink>
                 )}
               </BreadcrumbItem>

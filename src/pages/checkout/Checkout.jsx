@@ -11,7 +11,7 @@ const Checkout = () => {
   const data = useLoaderData();
   const [cartData, setCartData] = useState(data);
   const [location, setLocation] = useState(null);
-  const [shippingCost,setShippingConst] = useState('')
+  const [shippingCost,setShippingConst] = useState(0)
   
   const navigate = useNavigate();
   const windowLocation = useLocation();

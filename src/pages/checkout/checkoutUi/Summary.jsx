@@ -20,7 +20,7 @@ const Summary = ({ cartData, userLocation,shippingCost }) => {
   const [total, setTotal] = useState(0);
   const [discountCode, setDiscountCode] = useState("");
   const [voucherError, setVoucherError] = useState("");
-  
+  console.log(shippingCost)
   const location = useLocation();
 
   useEffect(() => {
@@ -66,8 +66,6 @@ const Summary = ({ cartData, userLocation,shippingCost }) => {
   const isStep2 = location.pathname.includes("step2");
   const isStep3 = location.pathname.includes("step3");
   const navigate = useNavigate();
-
-  console.log(userLocation);
 
   return (
     <div className="col-span-2 h-fit flex flex-col gap-4">
