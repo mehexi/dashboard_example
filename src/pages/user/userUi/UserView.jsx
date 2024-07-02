@@ -46,7 +46,7 @@ const UserView = () => {
     }
 
     return (
-        <Card>
+        <Card className='bg-primary-foreground'>
         <CardHeader>
           <CardTitle>All Users</CardTitle>
           <CardDescription>User list for all users</CardDescription>

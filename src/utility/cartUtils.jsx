@@ -37,3 +37,10 @@ export const removeFromCart = (itemId) => {
   const event = new Event('cartUpdated');
   window.dispatchEvent(event);
 };
+
+export const removeAllCart = () => {
+  localStorage.removeItem('cart');
+
+  const event = new Event('cartUpdated')
+  window.dispatchEvent(event)
+}

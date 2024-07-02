@@ -8,9 +8,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import config from "@/config";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Ellipsis, Eye, Pen } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
-const OrderList = ({ data }) => {
+const OrderList = ({ data,onEdit,onDelete }) => {
   const [expandedOrderId, setExpandedOrderId] = useState(null);
 
   console.log(data);
@@ -25,6 +27,19 @@ const OrderList = ({ data }) => {
     setExpandedOrderId(expandedOrderId === orderId ? null : orderId);
   };
 
+  const getStatusClass = (status) => {
+    switch (status) {
+      case 'Pending':
+        return 'bg-yellow-500/20 text-yellow-500';
+      case 'Completed':
+        return 'bg-green-500/20 text-green-500';
+      case 'Canceled':
+        return 'bg-red-500/20 text-red-500';
+      default:
+        return '';
+    }
+  };
+
   console.log(config);
 
   return (
@@ -33,6 +48,7 @@ const OrderList = ({ data }) => {
         <TableRow>
           <TableHead className="w-[100px]">Invoice</TableHead>
           <TableHead>Customer</TableHead>
+          <TableHead>Delivery Location</TableHead>
           <TableHead>Status</TableHead>
           <TableHead>Items</TableHead>
           <TableHead className="text-right">Amount</TableHead>
@@ -47,11 +63,14 @@ const OrderList = ({ data }) => {
               <TableCell>
                 {order.userId.name} <br /> {order.userId.email}
               </TableCell>
-              <TableCell><span>{order.orderStat}</span></TableCell>
+              <TableCell className='capitalize'>
+                {order.location.address}, {order.location.city}, {order.location.state}, {order.location.selectedCountry}
+              </TableCell>
+              <TableCell><span className={`inline-block px-2 py-1 rounded ${getStatusClass(order.orderStat)}`}>{order.orderStat}</span></TableCell>
               <TableCell>{order.products.length}</TableCell>
               <TableCell className="text-right">{order.cost}</TableCell>
-              <TableCell className="text-right">
-                <button onClick={(e) => toggleDetails(e, order._id)}>
+              <TableCell className="text-right flex justify-end gap-2">
+                <Button variant='outline' size='icon'  onClick={(e) => toggleDetails(e, order._id)}>
                   <ChevronDown
                     className={
                       expandedOrderId === order._id
@@ -59,7 +78,11 @@ const OrderList = ({ data }) => {
                         : "duration-300"
                     }
                   />
-                </button>
+                </Button>
+                <Button variant='outline' size='icon' onClick={() => { onEdit(order._id) }}>
+                <Pen width={14} height={14} />
+                </Button>
+                
               </TableCell>
             </TableRow>
             <TableRow className="border-none">
@@ -91,7 +114,7 @@ const OrderList = ({ data }) => {
                               <h1>{product.productID.name}</h1>
                             </div>
                           </TableCell>
-                          <TableCell colSpan={1} className='capitalize'>{product.productID.status}</TableCell>
+                          <TableCell colSpan={1} className='capitalize text-right'>{product.productID.status}</TableCell>
                           <TableCell colSpan={1} className="text-right">
                             {product.productID.price}
                           </TableCell>

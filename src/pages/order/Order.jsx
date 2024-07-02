@@ -11,8 +11,11 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import React, { useEffect, useState } from "react";
 import OrderList from "./orderUi/OrderList";
 import PaginationComp from "@/components/coustomUi/Pagination";
+import { useNavigate } from "react-router-dom";
+import Loading from "@/components/coustomUi/Loading";
 
 const Order = () => {
+  const navigate = useNavigate()
   const [data, setData] = useState();
   const [filter, setFilter] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
@@ -50,10 +53,16 @@ const Order = () => {
   };
 
   if (!data) {
-    return <h1>Loading...</h1>;
+    return (
+      <Loading/>
+    );
   }
 
-  console.log(data.orders,'data')
+  console.log(data.orders, 'data')
+
+  const onEdit = (_id) => {
+    navigate(`${_id}`)
+  }
 
   return (
     <section className="flex flex-col gap-4">
@@ -82,7 +91,7 @@ const Order = () => {
           </div>
         </CardHeader>
         <CardContent>
-          <OrderList data={data} />
+          <OrderList data={data} onEdit={onEdit} />
         </CardContent>
         <CardFooter className="flex justify-center">
           <PaginationComp

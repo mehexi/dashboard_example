@@ -11,7 +11,7 @@ import AddNewCard from "./AddNewCard";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 
-const PaymentMethod = () => {
+const PaymentMethod = ({setPaymentOption}) => {
   const [selectedMethod, setSelectedMethod] = useState(null);
   const [cards, setCards] = useState([]);
   console.log(cards)
@@ -23,6 +23,7 @@ const PaymentMethod = () => {
 
   const handleSelectMethod = (method) => {
     setSelectedMethod(method);
+    setPaymentOption(method)
   };
 
   const addCard = (newCard) => {

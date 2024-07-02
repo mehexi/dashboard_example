@@ -17,7 +17,7 @@ const SelectedUserCard = ({ data }) => {
   console.log(createdAt);
 
   return (
-    <Card className="flex p-6 gap-9">
+    <Card className="flex p-6 gap-9 bg-primary-foreground">
       <div className="aspect-square h-[340px] rounded-lg animate-gradient"></div>
       <div className="flex flex-col justify-between">
         <div>

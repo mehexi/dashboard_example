@@ -102,7 +102,10 @@ const ProductView = forwardRef((props, ref) => {
     {
       key: "status",
       header: "Status",
-      className: "hidden md:table-cell capitalize",
+      className: "hidden md:table-cell capitalize ",
+      render: (row) => (
+        <span className={getStatusClass(row.status)}>{row.status}</span>
+      )
     },
     {
       key: "createdAt",
@@ -158,6 +161,20 @@ const ProductView = forwardRef((props, ref) => {
     console.log(id)
     navigate(`${id}`)
   }
+
+  const getStatusClass = (status) => {
+    console.log(status)
+   switch (status) {
+     case 'draft':
+       return 'bg-yellow-500/20 text-yellow-500 px-2 py-1 rounded-full';
+     case 'active':
+       return 'bg-green-500/20 text-green-500 px-2 py-1 rounded-full';
+     case 'archived':
+       return 'bg-red-500/20 text-red-500 px-2 py-1 rounded-full';
+     default:
+       return '';
+   }
+ };
 
   return (
     <Card className='bg-primary-foreground'>

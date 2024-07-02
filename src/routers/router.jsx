@@ -9,7 +9,6 @@ import Step2 from "@/pages/checkout/checkoutUi/Step2";
 import Step3 from "@/pages/checkout/checkoutUi/Step3";
 import Dashboard from "@/pages/dashboard/Dashboard";
 
-
 // Lazy load components
 const Login = lazy(() => import("@/pages/loging/Loging"));
 const SignUp = lazy(() => import("@/pages/signUp/SignUp"));
@@ -21,6 +20,7 @@ const UserView = lazy(() => import("@/pages/user/userUi/UserView"));
 const SelectedUser = lazy(() => import("@/pages/user/SelectedUser"));
 const SelectedProducts = lazy(() => import("@/pages/products/SelectedProducts"));
 const Order = lazy(() => import("@/pages/order/Order"));
+const SingleOrder = lazy(()=> import("@/pages/order/SingleOrder"))
 const Store = lazy(() => import("@/pages/store/Store"));
 const SelectedProduct = lazy(() => import("@/pages/store/SelectedProduct"));
 const Checkout = lazy(() => import("@/pages/checkout/Checkout"));
@@ -57,7 +57,7 @@ const router = createBrowserRouter([
           {
             path: 'step3',
             element: <Suspense fallback={<Loading />}><Step3/></Suspense>,
-          },   
+          },
         ]
       }
     ]
@@ -100,6 +100,11 @@ const router = createBrowserRouter([
         path: "",
         element: <Suspense fallback={<Loading />}><Order/></Suspense>,
       },
+      {
+        path: ":id",
+        element: <Suspense fallback={<Loading />}><SingleOrder/></Suspense>,
+        loader: ({params}) => axiosInstance(`/sales/${params.id}`)
+      }
     ],
   },
   {

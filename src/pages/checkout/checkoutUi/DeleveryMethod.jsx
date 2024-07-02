@@ -4,8 +4,6 @@ import React, { useState } from "react";
 import { useOutletContext } from "react-router-dom";
 
 const DeliveryMethod = ({setShippingConst}) => {
-  const [selectedDelivery, setSelectedDelivery] = useState("Free");
-
   const deliveryOptions = [
     {
       label: "Free",
@@ -26,11 +24,13 @@ const DeliveryMethod = ({setShippingConst}) => {
       icon: <TrainFront size={32} />,
     },
   ];
+  const [selectedDelivery, setSelectedDelivery] = useState(deliveryOptions[0]);
+
 
   const handleDeliveryChange = (option) => {
       setSelectedDelivery(option);
       console.log('deliverycost', option)
-      setShippingConst(option.cost)
+      setShippingConst(option)
   };
 
   return (

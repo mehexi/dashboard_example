@@ -38,6 +38,7 @@ const AuthProvider = ({ children }) => {
         setUser(null)
         localStorage.removeItem('token')
         localStorage.removeItem('uID')
+        localStorage.clear()
         window.location.reload();
       })
       .catch((error) => {

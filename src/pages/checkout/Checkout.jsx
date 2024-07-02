@@ -11,6 +11,7 @@ const Checkout = () => {
   const data = useLoaderData();
   const [cartData, setCartData] = useState(data);
   const [location, setLocation] = useState(null);
+  const [paymentOption,setPaymentOption] = useState(null)
   const [shippingCost,setShippingConst] = useState(0)
   
   const navigate = useNavigate();
@@ -57,10 +58,10 @@ const Checkout = () => {
               </div>
             </>
           )}
-          <Outlet context={{ cartData, handleCartUpdate, location, setLocation,setShippingConst}} />
+          <Outlet context={{ cartData, handleCartUpdate, location, setLocation,setShippingConst,setPaymentOption,paymentOption}} />
         </div>
         <div className="col-span-1 lg:col-span-2">
-          <Summary cartData={cartData} userLocation={location} shippingCost={shippingCost} />
+          <Summary cartData={cartData} userLocation={location} shipping={shippingCost} paymentOption={paymentOption} />
         </div>
       </div>
     </section>

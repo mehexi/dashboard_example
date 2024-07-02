@@ -13,4 +13,6 @@ const RatingStars = ({ rating,size }) => {
   );
 };
 
+
+
 export default RatingStars;

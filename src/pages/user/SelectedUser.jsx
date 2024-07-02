@@ -46,7 +46,7 @@ const SelectedUser = () => {
   return (
     <>
       <SelectedUserCard data={data} />
-      <Card>
+      <Card className='bg-primary-foreground'>
         <CardHeader>
           <CardTitle>Purchesed item</CardTitle>
           <CardDescription>
