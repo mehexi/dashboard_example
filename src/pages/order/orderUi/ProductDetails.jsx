@@ -11,8 +11,7 @@ import React from "react";
 
 const ProductDetails = ({ productData }) => {
   const products = productData.products;
-  console.log(products);
-
+ 
   return (
     <Card className="bg-primary-foreground">
       <CardHeader>

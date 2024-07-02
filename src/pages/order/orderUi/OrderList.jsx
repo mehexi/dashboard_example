@@ -15,8 +15,6 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 const OrderList = ({ data,onEdit,onDelete }) => {
   const [expandedOrderId, setExpandedOrderId] = useState(null);
 
-  console.log(data);
-
   const orders = data?.orders;
   if (!orders) {
     return <h1>Loading...</h1>;
@@ -39,8 +37,6 @@ const OrderList = ({ data,onEdit,onDelete }) => {
         return '';
     }
   };
-
-  console.log(config);
 
   return (
     <Table>

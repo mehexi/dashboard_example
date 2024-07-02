@@ -24,8 +24,8 @@ const DeliveryMethod = ({setShippingConst}) => {
       icon: <TrainFront size={32} />,
     },
   ];
-  const [selectedDelivery, setSelectedDelivery] = useState(deliveryOptions[0]);
-
+  
+  const [selectedDelivery, setSelectedDelivery] = useState();
 
   const handleDeliveryChange = (option) => {
       setSelectedDelivery(option);
@@ -42,12 +42,12 @@ const DeliveryMethod = ({setShippingConst}) => {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2  gap-4">
-            {deliveryOptions.map((option) => (
+            {deliveryOptions?.map((option) => (
               <Card
                 key={option.label}
                 className={`cursor-pointer
                             ${
-                              selectedDelivery.label === option.label
+                              selectedDelivery?.label === option.label
                                 ? "border-blue-500"
                                 : ""
                             }`}
@@ -55,16 +55,16 @@ const DeliveryMethod = ({setShippingConst}) => {
               >
                 <CardContent className="pt-6 flex items-center">
                   <div className="flex items-center gap-3 w-full align-middle">
-                    {option.icon}
+                    {option?.icon}
                     <div>
-                      <div className="text-lg">{option.label}</div>
+                      <div className="text-lg">{option?.label}</div>
                       <div className="text-sm text-muted-foreground">
-                        {option.time}
+                        {option?.time}
                       </div>
                     </div>
                   </div>
                   <span className="text-right font-bold text-2xl">
-                    ${option.cost}
+                    ${option?.cost}
                   </span>
                 </CardContent>
               </Card>

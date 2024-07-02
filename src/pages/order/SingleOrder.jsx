@@ -2,18 +2,19 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChevronLeft } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import ProductDetails from "./orderUi/ProductDetails";
-import OrderDelievery from "./orderUi/OrderDelievery";
 import OrderDelivery from "./orderUi/OrderDelievery";
+import DetailsPanel from "./orderUi/DetailsPanel";
 
 const SingleOrder = () => {
   const data = useLoaderData();
   const navigate = useNavigate();
-  const [orderStat, setOrderStat] = useState(data.data.orderStat);
-  console.log(data);
-
+  const [orderStat, setOrderStat] = useState();
+  
+  console.log(data)
+  
   const getStatusClass = (status) => {
     switch (status) {
       case "Pending":
@@ -26,6 +27,19 @@ const SingleOrder = () => {
         return "";
     }
   };
+
+  useEffect(() => {
+    switch (data.data.orderStat) {
+        case "Pending":
+          setOrderStat(2);
+            break;
+        case 'Completed':
+          setOrderStat(4);
+            break;
+        default:
+          setOrderStat(1);
+    }
+}, [orderStat]);
 
   return (
     <>
@@ -53,11 +67,9 @@ const SingleOrder = () => {
       <section className="grid gap-4 grid-cols-7 mt-6">
         <div className="col-span-5 flex flex-col gap-4">
           <ProductDetails productData={data.data} />
-          <OrderDelivery/>
+          <OrderDelivery currentStep={orderStat} />
         </div>
-        <Card className="col-span-2">
-          <CardHeader></CardHeader>
-        </Card>
+        <DetailsPanel cartData={data.data} />
       </section>
     </>
   );

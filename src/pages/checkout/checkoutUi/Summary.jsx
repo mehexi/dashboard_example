@@ -22,6 +22,7 @@ import {
 import { removeAllCart } from "@/utility/cartUtils";
 
 const Summary = ({ cartData, userLocation, shipping, paymentOption }) => {
+  console.log(shipping)
   const [subtotal, setSubtotal] = useState(0);
   const [vouchers, setVouchers] = useState([]);
   const [discount, setDiscount] = useState(0);
@@ -29,7 +30,6 @@ const Summary = ({ cartData, userLocation, shipping, paymentOption }) => {
   const [discountCode, setDiscountCode] = useState("");
   const [voucherError, setVoucherError] = useState("");
   const [cart, setCartData] = useState([]);
-  const { user } = useContext(AuthContext);
   const location = useLocation();
   const navigate = useNavigate();
   const [error, setError] = useState(null);
@@ -84,6 +84,13 @@ const Summary = ({ cartData, userLocation, shipping, paymentOption }) => {
       setError("Please select a payment option");
       return;
     }
+    else if (!shipping) {
+      setError("Please select a shipping option");
+      return
+    }
+    else {
+      setError(null);
+    }
 
     try {
       const userId = localStorage.getItem("uID");
@@ -103,15 +110,17 @@ const Summary = ({ cartData, userLocation, shipping, paymentOption }) => {
         selectedCountry: userLocation.selectedCountry,
       };
 
-      // Prepare orderData object
       const orderData = {
         userId,
+        paymentMethod: paymentOption,
+        deliveryOption: `${shipping.label} ${shipping.time}`,
         cost: total,
         products,
         location,
       };
-
       
+      console.log(orderData)
+
       const response = await axiosInstance.post("/sales", orderData);
       console.log("Order added successfully:", response.data);
       const orderDetails = response.data
@@ -127,8 +136,7 @@ const Summary = ({ cartData, userLocation, shipping, paymentOption }) => {
     const product = JSON.parse(localStorage.getItem("cart"));
     setCartData(product);
   }, []);
-  
-  console.log(shipping);
+
 
   const isStep2 = location.pathname.includes("step2");
   const isStep3 = location.pathname.includes("step3");
@@ -142,7 +150,7 @@ const Summary = ({ cartData, userLocation, shipping, paymentOption }) => {
         {isStep3 && (
           <Card className="bg-primary-foreground">
             <CardContent className="pt-6">
-              {cart.map((item, index) => (
+              {cart?.map((item, index) => (
                 <>
                   <Card key={index} className="bg-transparent border-none">
                     <div className="p-3 flex gap-3">
