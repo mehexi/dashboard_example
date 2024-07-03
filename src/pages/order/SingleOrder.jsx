@@ -1,20 +1,27 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { ChevronLeft } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import ProductDetails from "./orderUi/ProductDetails";
 import OrderDelivery from "./orderUi/OrderDelievery";
 import DetailsPanel from "./orderUi/DetailsPanel";
+import { formatDate } from "@/utility/dataFromating";
+import axiosInstance from "@/axios/AxiosIntence";
 
 const SingleOrder = () => {
   const data = useLoaderData();
   const navigate = useNavigate();
   const [orderStat, setOrderStat] = useState();
-  
-  console.log(data)
-  
+
+  console.log(data);
+
   const getStatusClass = (status) => {
     switch (status) {
       case "Pending":
@@ -30,16 +37,37 @@ const SingleOrder = () => {
 
   useEffect(() => {
     switch (data.data.orderStat) {
-        case "Pending":
-          setOrderStat(2);
-            break;
-        case 'Completed':
-          setOrderStat(4);
-            break;
-        default:
-          setOrderStat(1);
+      case "Pending":
+        setOrderStat(2);
+        break;
+      case "Completed":
+        setOrderStat(4);
+        break;
+      default:
+        setOrderStat(1);
     }
-}, [orderStat]);
+  }, [orderStat]);
+
+  //handle edit product stat
+
+  const handleEdit = (_id,status) => {
+    console.log(_id)
+
+    const load = {
+      orderId: _id,
+      orderStat: status || 'Completed'
+    }
+
+    const response = async () => {
+      try {
+        const res = await  axiosInstance.patch(`/sales/${_id}`,load)
+        console.log(res)
+      } catch (error)  {
+        console.log(error)
+      }
+    } 
+    response()
+  }
 
   return (
     <>
@@ -54,14 +82,17 @@ const SingleOrder = () => {
           >
             <ChevronLeft />
           </Button>
-          <CardTitle>Order ID #{data.data._id} </CardTitle>
-          <h1
+          <CardTitle className="flex flex-col">
+            <h1>Order ID #{data.data._id}</h1>{" "}
+            <CardDescription>{formatDate(data.data.createdAt)}</CardDescription>
+          </CardTitle>
+          <Badge
             className={`${getStatusClass(
               data.data.orderStat
             )} w-fit px-2 py-1 rounded-lg`}
           >
             {data.data.orderStat}
-          </h1>
+          </Badge>
         </div>
       </div>
       <section className="grid gap-4 grid-cols-7 mt-6">
@@ -69,7 +100,7 @@ const SingleOrder = () => {
           <ProductDetails productData={data.data} />
           <OrderDelivery currentStep={orderStat} />
         </div>
-        <DetailsPanel cartData={data.data} />
+        <DetailsPanel cartData={data.data} handleEdit={handleEdit} />
       </section>
     </>
   );

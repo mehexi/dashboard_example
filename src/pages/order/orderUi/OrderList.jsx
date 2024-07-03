@@ -82,7 +82,7 @@ const OrderList = ({ data,onEdit,onDelete }) => {
               </TableCell>
             </TableRow>
             <TableRow className="border-none">
-              <TableCell className="p-0" colSpan={6}>
+              <TableCell className="p-0" colSpan={7}>
                 <div
                   className={`collapsible-content ${
                     expandedOrderId === order._id ? "expanded" : ""
@@ -98,7 +98,7 @@ const OrderList = ({ data,onEdit,onDelete }) => {
                     <TableBody>
                       {order.products.map((product, index) => (
                         <TableRow key={index}>
-                          <TableCell>
+                          <TableCell >
                             <div className="flex gap-3 justify-start items-center">
                               {product.productID.images && product.productID.images[0] && (
                                 <img
@@ -110,10 +110,12 @@ const OrderList = ({ data,onEdit,onDelete }) => {
                               <h1>{product.productID.name}</h1>
                             </div>
                           </TableCell>
+                         
                           <TableCell colSpan={1} className='capitalize text-right'>{product.productID.status}</TableCell>
                           <TableCell colSpan={1} className="text-right">
                             {product.productID.price}
                           </TableCell>
+                         
                         </TableRow>
                       ))}
                     </TableBody>

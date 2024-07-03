@@ -11,7 +11,7 @@ import React from "react";
 
 const ProductDetails = ({ productData }) => {
   const products = productData.products;
- 
+
   return (
     <Card className="bg-primary-foreground">
       <CardHeader>
@@ -43,6 +43,21 @@ const ProductDetails = ({ productData }) => {
                 </TableCell>
               </TableRow>
             ))}
+            <TableRow>
+              <TableCell className="font-semibold text-end" colSpan={2}>
+                Charge
+              </TableCell>
+              <TableCell className='text-xl font-semibold text-end text-red-400'>
+                {" "}- $
+                {productData.deliveryOption === "Free 5-7 days delivery"
+                  ? 0
+                  : productData.deliveryOption === "Standard 3-5 days delivery"
+                  ? 10
+                  : productData.deliveryOption === "Express 2-3 days delivery"
+                  ? 20
+                  : null}
+              </TableCell>
+            </TableRow>
             <TableRow>
               <TableCell className="font-semibold text-lg text-end" colSpan={2}>
                 Total

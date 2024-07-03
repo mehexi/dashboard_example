@@ -1,4 +1,9 @@
 export const formatDate = (isoString) => {
+
+  if (!isoString) {
+    return null;
+  }
+
     const date = new Date(isoString);
     return date.toLocaleString('en-US', {
       year: 'numeric',
