@@ -138,5 +138,18 @@
   max-height: fit-content; /* Set to a high value to allow for content expansion */
 }
 
+@keyframes loading {
+  0% {
+    left: -33%;
+  }
+  50% {
+    left: 100%;
+  }
+  100% {
+    left: -33%;
+  }
+}
 
-
+.animate-loading {
+  animation: loading 2s infinite;
+}

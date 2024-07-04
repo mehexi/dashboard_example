@@ -13,14 +13,21 @@ import OrderList from "./orderUi/OrderList";
 import PaginationComp from "@/components/coustomUi/Pagination";
 import { useNavigate } from "react-router-dom";
 import Loading from "@/components/coustomUi/Loading";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const Order = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [data, setData] = useState();
   const [filter, setFilter] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalItems, setTotalItems] = useState(0);
-  const pageSize = 10;
+  const [pageSize, setPageSize] = useState(10);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -41,7 +48,7 @@ const Order = () => {
     };
 
     fetchData();
-  }, [filter, currentPage]);
+  }, [filter, currentPage, pageSize]);
 
   const handleTabChange = (value) => {
     setFilter(value);
@@ -53,16 +60,18 @@ const Order = () => {
   };
 
   if (!data) {
-    return (
-      <Loading/>
-    );
+    return <Loading />;
   }
 
-  console.log(data.orders, 'data')
+  console.log(data.orders, "data");
 
   const onEdit = (_id) => {
-    navigate(`${_id}`)
-  }
+    navigate(`${_id}`);
+  };
+
+  const handlePageSizeChange = (value) => {
+    setPageSize(value);
+  };
 
   return (
     <section className="flex flex-col gap-4">
@@ -80,8 +89,16 @@ const Order = () => {
             <TabsTrigger value="Canceled">Canceled</TabsTrigger>
           </TabsList>
         </Tabs>
+        <Select onValueChange={handlePageSizeChange}>
+          <SelectTrigger className='w-fit'>{pageSize}</SelectTrigger>
+          <SelectContent>
+            <SelectItem value={5}>5</SelectItem>
+            <SelectItem value={10}>10</SelectItem>
+            <SelectItem value={15}>15</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
-      <Card className='bg-primary-foreground'>
+      <Card className="bg-primary-foreground">
         <CardHeader>
           <div>
             <CardTitle>List of Orders</CardTitle>

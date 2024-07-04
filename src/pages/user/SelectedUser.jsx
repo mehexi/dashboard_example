@@ -15,41 +15,51 @@ import { formatDate } from "@/utility/dataFromating";
 
 const SelectedUser = () => {
   const data = useLoaderData();
-  console.log(data)
+  console.log(data);
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const transactionIds = data.transactions;
-  console.log(data)
+  console.log(data);
 
-
-  console.log(filteredProducts)
+  console.log(filteredProducts);
 
   const columns = [
     { key: "orderId", header: "Order ID", className: "font-medium" },
     { key: "totalCost", header: "Total Cost", className: "font-medium" },
-    { key: "date", header: "Date", className: "font-medium", render:(row)=>formatDate(row.data)}
+    {key:'products',header: 'Product Item', className:'font-medium',render: (row)=> row.products.length},
+    {
+      key: "date",
+      header: "Date",
+      className: "font-medium",
+      render: (row) => formatDate(row.date),
+    },
   ];
-  
-  console.log(transactionIds,'tranjection')
+
+  console.log(transactionIds, "tranjection");
 
   return (
     <>
       <SelectedUserCard data={data} />
-      <Card className='bg-primary-foreground'>
+      <Card className="bg-primary-foreground">
         <CardHeader>
           <CardTitle>Purchesed item</CardTitle>
           <CardDescription>
             {transactionIds.length > 0
-              ? `You have ${filteredProducts.length} items in your purchase history.`
+              ? `You have ${transactionIds.length} items in your purchase history.`
               : "No purchased items found for the given transactions."}
           </CardDescription>
         </CardHeader>
-        {
-          transactionIds === 0 ?  <></> : 
-        <CardContent>
-          <TableData data={transactionIds} columns={columns} isOptionAvilable={false} />
-        </CardContent>
-        }
+        {transactionIds === 0 ? (
+          <></>
+        ) : (
+          <CardContent>
+            <TableData
+              data={transactionIds}
+              columns={columns}
+              isOptionAvilable={true}
+            />
+          </CardContent>
+        )}
       </Card>
     </>
   );

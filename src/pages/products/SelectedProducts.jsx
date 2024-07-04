@@ -1,18 +1,20 @@
-import React, { useState } from "react";
 import { useLoaderData } from "react-router-dom";
 import TitleCard from "./productsUi/TitleCard";
 import ProductName from "./productsUi/ProductName";
 import ChartCard from "@/components/coustomUi/ChartCard";
-import TransactionsCard from "../user/userUi/TransactionsCard";
-import { Card } from "@/components/ui/card";
-import TableData from "@/components/coustomUi/TableData";
 import ProductTable from "./productsUi/ProductTable";
 
 const SelectedProducts = () => {
   const data = useLoaderData();
 
-  const productDetails = data.data.data;
-  const productStat = data.data.stat[0];
+  const productDetails = data?.data?.data;
+  const productStat = data?.data?.stat[0];
+
+  if (!productStat) {
+    return <div>
+      <h1 className="text-3xl font-bold text-center">No Data Found</h1>
+    </div>
+  }
 
   const yearlyRevenue = Math.round(
     productDetails.price * productStat.yearlyTotalSoldUnits

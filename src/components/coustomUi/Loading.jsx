@@ -1,13 +1,13 @@
-import { LoaderCircle } from "lucide-react";
-import { Card } from "../ui/card";
+// Loading.jsx
+import React from 'react';
 
 const Loading = () => {
   return (
-    <Card className="mx-auto w-full max-w-[80rem] p-4">
-    <div className="flex justify-center items-center w-ful h-80">
-    <LoaderCircle size={64} className="animate-spin"/>
+    <div className="flex justify-center items-center min-h-screen rounded-xl">
+      <div className="relative w-6/12 h-1 overflow-hidden rounded-lg bg-primary/20">
+        <div className="absolute left-0 top-0 w-1/3 h-full animate-loading bg-primary rounded-full"></div>
+      </div>
     </div>
-  </Card>
   );
 };
 

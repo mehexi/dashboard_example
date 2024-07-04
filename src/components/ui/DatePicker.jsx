@@ -12,8 +12,8 @@ import {
 
 export function DatePickerWithRange({ className, onChange }) {
   const [date, setDate] = React.useState({
-    from: new Date(2021, 0, 2),
-    to: new Date(2021, 10, 17),
+    from: new Date(2024, 0, 2),
+    to: new Date(2024, 10, 17),
   });
 
   const handleSelect = (range) => {

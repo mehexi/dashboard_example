@@ -1,9 +1,29 @@
-import { Table, TableBody, TableHead, TableHeader, TableRow, TableCell } from '../ui/table';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from '../ui/dropdown-menu';
-import { Button } from '../ui/button';
-import { MoreHorizontal } from 'lucide-react';
+import {
+  Table,
+  TableBody,
+  TableHead,
+  TableHeader,
+  TableRow,
+  TableCell,
+} from "../ui/table";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
+import { Button } from "../ui/button";
+import { MoreHorizontal } from "lucide-react";
 
-const TableData = ({ columns, data, onEdit, onDelete,onClick,isOptionAvilable = true }) => {
+const TableData = ({
+  columns,
+  data,
+  onEdit,
+  onDelete,
+  onClick,
+  isOptionAvailable = true,
+}) => {
   return (
     <Table>
       <TableHeader>
@@ -13,34 +33,46 @@ const TableData = ({ columns, data, onEdit, onDelete,onClick,isOptionAvilable = 
               {column.header}
             </TableHead>
           ))}
-          <TableHead>
-            <span className="sr-only">Actions</span>
-          </TableHead>
+          {isOptionAvailable && (
+            <TableHead>
+              <span className="sr-only"></span>
+            </TableHead>
+          )}
         </TableRow>
       </TableHeader>
-      <TableBody className='cursor-pointer'>
+      <TableBody className="cursor-pointer">
         {data.map((row, rowIndex) => (
-          <TableRow key={rowIndex} >
+          <TableRow key={rowIndex}>
             {columns.map((column) => (
-              <TableCell key={column.key} className={column.className}  onClick={()=>onClick(row)}>
+              <TableCell
+                key={column.key}
+                className={column.className}
+                onClick={() => onClick(row)}
+              >
                 {column.render ? column.render(row) : row[column.key]}
               </TableCell>
             ))}
-            <TableCell className={isOptionAvilable ? 'block': 'hidden'}>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button aria-haspopup="true" size="icon" variant="ghost">
-                    <MoreHorizontal className="h-4 w-4" />
-                    <span className="sr-only">Toggle menu</span>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                  <DropdownMenuItem onClick={() => onEdit(row)}>Edit</DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => onDelete(row)}>Delete</DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </TableCell>
+            {isOptionAvailable && (
+              <TableCell>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button aria-haspopup="true" size="icon" variant="ghost">
+                      <MoreHorizontal className="h-4 w-4" />
+                      <span className="sr-only">Toggle menu</span>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                    <DropdownMenuItem onClick={() => onEdit(row)}>
+                      Edit
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => onDelete(row)}>
+                      Delete
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </TableCell>
+            )}
           </TableRow>
         ))}
       </TableBody>

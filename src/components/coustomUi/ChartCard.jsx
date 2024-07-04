@@ -27,8 +27,8 @@ import { DatePickerWithRange } from "../ui/DatePicker";
 const ChartCard = ({ data, timeRange = "monthly", onToggle }) => {
   const [selectedRange, setSelectedRange] = useState(timeRange);
   const [dateRange, setDateRange] = useState([
-    new Date("2021-01-02"),
-    new Date("2021-11-17"),
+    new Date("2024-01-02"),
+    new Date("2024-11-17"),
   ]);
 
   const stat = data.data.stat[0];
