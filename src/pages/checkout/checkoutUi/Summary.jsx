@@ -155,7 +155,7 @@ const Summary = ({ cartData, userLocation, shipping, paymentOption }) => {
                   <Card key={index} className="bg-transparent border-none">
                     <div className="p-3 flex gap-3">
                       <img
-                        src={`${config.API_BASE_URL}${item.images[0]}`}
+                        src={`${item.images[0]}`}
                         className="w-auto h-20 aspect-square  rounded-lg object-cover"
                         alt=""
                       />

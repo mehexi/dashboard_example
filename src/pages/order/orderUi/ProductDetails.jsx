@@ -25,7 +25,7 @@ const ProductDetails = ({ productData }) => {
                 <TableCell>
                   <div className="flex gap-3 items-center">
                     <img
-                      src={`${config.API_BASE_URL}${product.productID.images[0]}`}
+                      src={`${product.productID.images[0]}`}
                       className="aspect-square w-20 h-20 rounded object-cover"
                       alt={product.productID.name}
                     />

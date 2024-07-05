@@ -102,7 +102,7 @@ const OrderList = ({ data,onEdit,onDelete }) => {
                             <div className="flex gap-3 justify-start items-center">
                               {product.productID.images && product.productID.images[0] && (
                                 <img
-                                  src={`${config.API_BASE_URL}${product.productID.images[0]}`}
+                                  src={`${product.productID.images[0]}`}
                                   alt="product"
                                   className="w-12 h-12 rounded-lg object-cover"
                                 />

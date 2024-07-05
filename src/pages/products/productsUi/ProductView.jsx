@@ -82,7 +82,7 @@ const ProductView = forwardRef((props, ref) => {
           alt="data image"
           className="aspect-square rounded-md object-cover border capitalize"
           height="64"
-          src={`${config.API_BASE_URL}${row.images[0]}`}
+          src={`${row.images[0]}`}
           width="64"
         />
       ),

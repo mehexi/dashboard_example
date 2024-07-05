@@ -29,6 +29,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axiosInstance from "@/axios/AxiosIntence";
 import { v4 as uuidv4 } from 'uuid';
+import axios from "axios";
 
 const ProductsAdd = () => {
   const [images, setImages] = useState([]);
@@ -73,9 +74,9 @@ const ProductsAdd = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (saveButtonState === "loading") return;
-
+  
     setSaveButtonState("loading");
-
+  
     const formData = new FormData();
     formData.append("name", productData.name);
     formData.append("description", productData.description);
@@ -83,20 +84,44 @@ const ProductsAdd = () => {
     formData.append("status", productData.status);
     formData.append("sku", productData.sku);
     formData.append("stock", productData.stock);
-
-    images.forEach((image) => {
-      formData.append("images", image.file);
-    });
-
-    const requestId = uuidv4();
-    setRequestIdentifier(requestId);
-
+  
+    const imageUrls = [];
+  
     try {
+      // Upload images to ImageBB and get URLs
+      for (const image of images) {
+        const imageFormData = new FormData();
+        imageFormData.append("image", image.file);
+  
+        const response = await axios.post('https://api.imgbb.com/1/upload', imageFormData, {
+          params: {
+            key: '710f97496926ec3fd8de1a493d615423', 
+          },
+        });
+  
+        const imageUrl = response.data.data.url;
+        imageUrls.push(imageUrl);
+      }
+  
+      // Append image URLs to form data
+      imageUrls.forEach((url) => {
+        formData.append("imageUrls", url);
+      });
+  
+      const requestId = uuidv4();
+      setRequestIdentifier(requestId);
+
+      for (let [key, value] of formData.entries()) {
+        console.log(`${key}: ${value}`);
+      }
+
+      // Submit form data to your backend
       const result = await axiosInstance.post("/client/products", formData, {
         headers: {
           'X-Request-Id': requestId
         }
       });
+  
       console.log(result);
       setSaveButtonState("saved");
       setTimeout(() => {

@@ -36,7 +36,7 @@ export function PhotoCarousel({ data }) {
             <CarouselItem key={index}>
               <div className="flex aspect-square items-center justify-center relative">
                 <img
-                  src={`${config.API_BASE_URL}${image}`}
+                  src={`${image}`}
                   alt={`product image ${index + 1}`}
                   draggable={false}
                   className="w-full object-cover aspect-square h-full"

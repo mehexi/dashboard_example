@@ -25,7 +25,7 @@ const ProductCard = ({ data }) => {
       >
         <div className="mb-3 relative">
           <img
-            src={`${config.API_BASE_URL}${data.images[0]}`}
+            src={`${data.images[0]}`}
             alt="Product Image"
             className="aspect-square rounded-xl object-cover w-full group-hover:scale-105 duration-300"
           />

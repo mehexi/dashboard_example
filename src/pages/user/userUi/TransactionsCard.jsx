@@ -13,7 +13,7 @@ const TransactionsCard = ({ data }) => {
   return (
     <Card className="flex flex-col h-full">
       <CardContent className="flex flex-col gap-2 p-3">
-        <img className="aspect-video object-cover" src={`${config.API_BASE_URL}${data.images[0]}`} alt="" />
+        <img className="aspect-video object-cover" src={`${data.images[0]}`} alt="" />
         <CardTitle>{data.name}</CardTitle>
         <CardDescription>{data.description}</CardDescription>
         <RatingStars rating={data.rating} />
