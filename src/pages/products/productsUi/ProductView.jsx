@@ -39,6 +39,7 @@ import {
   AlertDialogCancel,
   AlertDialogAction,
 } from "@/components/ui/alert-dialog";
+import config from "@/config";
 
 const ProductView = forwardRef((props, ref) => {
   const [data, setData] = useState([]);
@@ -67,8 +68,6 @@ const ProductView = forwardRef((props, ref) => {
     }
   };
 
-  const URL = "http://localhost:5001";
-
   useEffect(() => {
     fetchData(currentPage, pageSize);
   }, [currentPage, pageSize, filter]);
@@ -83,7 +82,7 @@ const ProductView = forwardRef((props, ref) => {
           alt="data image"
           className="aspect-square rounded-md object-cover border capitalize"
           height="64"
-          src={`${URL}${row.images[0]}`}
+          src={`${config.API_BASE_URL}${row.images[0]}`}
           width="64"
         />
       ),
