@@ -77,7 +77,7 @@ const ProductTable = ({ productStat }) => {
         </div>
       </CardHeader>
       <CardContent>
-        <TableData data={dataToDisplay} columns={columns} isOptionAvilable={false}/>
+        <TableData data={dataToDisplay} columns={columns} isOptionAvailable={false}/>
       </CardContent>
       <CardFooter>
         <PaginationComp

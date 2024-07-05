@@ -103,7 +103,7 @@ const Header = () => {
 
 
   return (
-    <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b !bg-background px-4 pb-4 sm:h-auto  sm:bg-transparent sm:px-6 sm:ml-14 py-3">
+    <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b !bg-background/20 backdrop-blur-lg  px-4 pb-4 sm:h-auto  sm:bg-transparent sm:px-6 sm:ml-14 py-3">
       <Sheet>
         <SheetTrigger asChild>
           <Button size="icon" variant="outline" className="sm:hidden">
