@@ -13,13 +13,14 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Table, TableCell, TableRow } from "@/components/ui/table";
 import config from "@/config";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useId, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import CheckOutComplete from "../CheckOutComplete";
 import {
   Dialog,
 } from "@/components/ui/dialog";
 import { removeAllCart } from "@/utility/cartUtils";
+import LoginError from "./LoginError";
 
 const Summary = ({ cartData, userLocation, shipping, paymentOption }) => {
   console.log(shipping)
@@ -30,12 +31,14 @@ const Summary = ({ cartData, userLocation, shipping, paymentOption }) => {
   const [discountCode, setDiscountCode] = useState("");
   const [voucherError, setVoucherError] = useState("");
   const [cart, setCartData] = useState([]);
-  const location = useLocation();
-  const navigate = useNavigate();
   const [error, setError] = useState(null);
   const [orderComplete, setOrderComplete] = useState(false);
+  const [isUserLoggedIn,setIsUserLoggedIn] = useState(true)
   const [orderDetails, setOrderDetails] = useState([])
+  const userId = localStorage.getItem("uID");
   
+  const location = useLocation();
+  const navigate = useNavigate();
   const shippingCost = shipping.cost || 0
 
 
@@ -80,20 +83,25 @@ const Summary = ({ cartData, userLocation, shipping, paymentOption }) => {
 
   //add order to database
   const handleOrderData = async () => {
-    if (!paymentOption) {
-      setError("Please select a payment option");
-      return;
-    }
-    else if (!shipping) {
+    if (!shipping) {
       setError("Please select a shipping option");
       return
     }
+   else  if (!paymentOption) {
+      setError("Please select a payment option");
+      return;
+    }
+    else if (!userId) {
+      setError("You need to login to place an order");
+      navigate('/login', {state: {form:location}})
+      return
+      }
     else {
       setError(null);
     }
 
+
     try {
-      const userId = localStorage.getItem("uID");
 
       const products = cartData.map((item) => ({
         productID: item._id,

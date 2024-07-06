@@ -8,7 +8,7 @@ const ActiveLink = forwardRef(({ to, children }, ref) => {
     <NavLink
       to={to}
       className={({ isActive }) =>
-        `transition-all duration-300 px-4 py-2 ${isActive ? 'bg-accent text-accent-foreground' : 'inactive-link'}`
+        `transition-all duration-300 px-4 py-2 ${isActive ? 'bg-accent text-accent-foreground rounded-lg w-fit' : ''}`
       }
       ref={ref}
     >

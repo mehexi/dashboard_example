@@ -2,7 +2,7 @@ import { useState, useContext } from "react";
 import { AuthContext } from "@/auth/AuthProvider";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import axiosInstance from "@/axios/AxiosIntence";
 
 const Login = () => {
@@ -17,6 +17,8 @@ const Login = () => {
   const [password, setPassword] = useState("");
 
   const navigate = useNavigate()
+  const location = useLocation()
+  console.log(location)
 
   const handleGoogle = () => {
     signInWithGoogle()
@@ -42,7 +44,7 @@ const Login = () => {
             console.log(res.data);
             handleSetUser(res.data.user);
             setToken(res.data.token);
-            navigate('/dashboard');
+            navigate(location.state?.form?.pathname || '/');
           })
           .catch((error) => console.error("Error", error));
       })
