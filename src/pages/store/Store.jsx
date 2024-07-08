@@ -2,8 +2,8 @@ import axiosInstance from "@/axios/AxiosIntence";
 import { useEffect, useState } from "react";
 import ProductCard from "./storeUi/ProductCard";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
 import { LoaderCircle } from "lucide-react";
+import Loading from "@/components/coustomUi/Loading";
 
 const Store = () => {
   const [product, setProduct] = useState([]);
@@ -30,11 +30,7 @@ const Store = () => {
 
   if (loading) {
     return (
-      <Card className="mx-auto w-full max-w-[80rem] p-4">
-        <div className="flex justify-center items-center w-ful h-80">
-        <LoaderCircle size={64} className="animate-spin"/>
-        </div>
-      </Card>
+    <Loading/>
     );
   }
 
@@ -44,7 +40,7 @@ const Store = () => {
         <CardHeader>
           <CardTitle>Shop</CardTitle>
         </CardHeader>
-        <CardContent className="grid grid-cols-4 gap-4">
+        <CardContent className="grid grid-cols-4 gap-4 max-sm:grid-cols-1">
           {product.map((item) => (
             <ProductCard data={item} key={item._id} />
           ))}

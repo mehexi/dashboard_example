@@ -48,7 +48,7 @@ const LocationCard = ({ data, onDelete, setLocation }) => {
           </CardDescription>
           <CardDescription>{phone}</CardDescription>
         </div>
-        <div className="flex gap-2 items-center mt-2 sm:mt-0">
+        <div className="flex gap-2 items-center mt-2 sm:mt-0 max-md:flex-col max-md:items-center max-md:w-full">
           {!useAsDefault && (
             <Button
               variant="danger"

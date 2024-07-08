@@ -157,6 +157,9 @@ const Summary = ({ cartData, userLocation, shipping, paymentOption }) => {
       <div className="col-span-2 h-fit flex flex-col gap-4">
         {isStep3 && (
           <Card className="bg-primary-foreground">
+            <CardHeader>
+              <CardTitle>Products</CardTitle>
+            </CardHeader>
             <CardContent className="pt-6">
               {cart?.map((item, index) => (
                 <>

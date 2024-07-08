@@ -23,6 +23,7 @@ import {
 } from "../ui/select";
 import CoustomToolTip from "./CoustomToolTip";
 import { DatePickerWithRange } from "../ui/DatePicker";
+import { formatDate } from "@/utility/dataFromating";
 
 const ChartCard = ({ data, timeRange = "monthly", onToggle }) => {
   const [selectedRange, setSelectedRange] = useState(timeRange);
@@ -49,11 +50,16 @@ const ChartCard = ({ data, timeRange = "monthly", onToggle }) => {
     return new Date(date.getFullYear(), date.getMonth(), date.getDate());
   };
 
-  const filteredDailyData = dailyData.filter((item) => {
-    const date = stripTime(new Date(item.date));
-    const [startDate, endDate] = dateRange.map((d) => d && stripTime(d));
-    return (!startDate || date >= startDate) && (!endDate || date <= endDate);
-  });
+  const filteredDailyData = dailyData
+    .filter((item) => {
+      const date = stripTime(new Date(item.date));
+      const [startDate, endDate] = dateRange.map((d) => d && stripTime(d));
+      return (!startDate || date >= startDate) && (!endDate || date <= endDate);
+    })
+    .map((item) => ({
+      ...item,
+      date: formatDate(item.date) // Use your formatDate utility here
+    }));
 
   const totalSales = filteredDailyData.reduce(
     (acc, item) => acc + item.totalSales,
@@ -73,7 +79,7 @@ const ChartCard = ({ data, timeRange = "monthly", onToggle }) => {
         <div className="flex flex-col sm:flex-row sm:justify-between">
           <div className="mb-4 sm:mb-0">
             <CardDescription>Overview</CardDescription>
-            <CardTitle className="text-2xl sm:text-4xl">{totalSales}</CardTitle>
+            <CardTitle className="text-2xl sm:text-4xl">${totalSales}</CardTitle>
             <p>Total Units Sold: {totalUnits}</p>
           </div>
           <div className="flex flex-col sm:flex-row gap-2">
@@ -97,7 +103,7 @@ const ChartCard = ({ data, timeRange = "monthly", onToggle }) => {
             <YAxis />
             <Tooltip content={<CoustomToolTip />} />
             <Bar
-              dataKey="totalSales"
+              dataKey="totalUnits"
               fill="hsl(var(--primary))"
               radius={[4, 4, 0, 0]}
             />

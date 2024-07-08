@@ -41,7 +41,7 @@ const DeliveryMethod = ({setShippingConst}) => {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-2  gap-4">
+          <div className="grid grid-cols-2  gap-4 max-md:grid-cols-1">
             {deliveryOptions?.map((option) => (
               <Card
                 key={option.label}
@@ -53,7 +53,7 @@ const DeliveryMethod = ({setShippingConst}) => {
                             }`}
                 onClick={() => handleDeliveryChange(option)}
               >
-                <CardContent className="pt-6 flex items-center">
+                <CardContent className="pt-6 flex items-center ">
                   <div className="flex items-center gap-3 w-full align-middle">
                     {option?.icon}
                     <div>

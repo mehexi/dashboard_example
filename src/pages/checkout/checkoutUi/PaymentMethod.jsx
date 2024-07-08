@@ -6,34 +6,40 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-// import { Select, SelectTrigger, SelectValue, SelectContent, SelectOption } from "@/components/ui/select";
-import AddNewCard from "./AddNewCard";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { FaCreditCard, FaMoneyBill, FaPaypal } from "react-icons/fa6";
 import { Label } from "@/components/ui/label";
+import AddNewCard from "./AddNewCard";
 
-const PaymentMethod = ({setPaymentOption}) => {
+const PaymentMethod = ({ setPaymentOption }) => {
   const [selectedMethod, setSelectedMethod] = useState(null);
   const [cards, setCards] = useState([]);
-  console.log(cards)
+  console.log(cards);
 
   useEffect(() => {
-    const savedCards = JSON.parse(localStorage.getItem('cards')) || [];
+    const savedCards = JSON.parse(localStorage.getItem("cards")) || [];
     setCards(savedCards);
   }, []);
 
   const handleSelectMethod = (method) => {
     setSelectedMethod(method);
-    setPaymentOption(method)
+    setPaymentOption(method);
   };
 
   const addCard = (newCard) => {
     const updatedCards = [...cards, newCard];
     setCards(updatedCards);
-    localStorage.setItem('cards', JSON.stringify(updatedCards));
+    localStorage.setItem("cards", JSON.stringify(updatedCards));
   };
 
   return (
-    <Card className="bg-primary-foreground">
+    <Card className="bg-primary-foreground w-full">
       <CardHeader>
         <CardTitle>Payment</CardTitle>
       </CardHeader>
@@ -46,37 +52,33 @@ const PaymentMethod = ({setPaymentOption}) => {
           }`}
           onClick={() => handleSelectMethod("paypal")}
         >
-          <CardContent className="pt-6 flex items-center justify-between">
-            <div>
+          <CardContent className="pt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between">
+            <div className="w-full sm:w-9/12">
               <CardTitle>Pay with PayPal</CardTitle>
-              <CardDescription>
+              <CardDescription className="truncate">
                 You will be redirected to PayPal website to complete your
                 purchase securely.
               </CardDescription>
             </div>
-            <img
-              src="/path/to/paypal-logo.png"
-              alt="PayPal"
-              className="w-8 h-8"
-            />
+           <FaPaypal className="mt-3"/>
           </CardContent>
         </Card>
 
         <Card
-          className={`cursor-pointer  hover:border hover:border-blue-500 hover:shadow-md ${
+          className={`cursor-pointer hover:border hover:border-blue-500 hover:shadow-md ${
             selectedMethod === "card" ? "border border-blue-500 shadow-md" : ""
           }`}
           onClick={() => handleSelectMethod("card")}
         >
-          <CardContent className="pt-6">
-            <div className="flex items-center justify-between">
-              <div>
+          <CardContent className="pt-6 flex flex-col">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between">
+              <div className="w-full sm:w-9/12">
                 <CardTitle>Credit / Debit card</CardTitle>
-                <CardDescription>
+                <CardDescription className='truncate'>
                   We support Mastercard, Visa, Discover, and Stripe.
                 </CardDescription>
               </div>
-              <div className="flex space-x-2">
+              <div className="flex space-x-2 mt-4 sm:mt-0">
                 <img
                   src="/path/to/mastercard-logo.png"
                   alt="Mastercard"
@@ -86,11 +88,11 @@ const PaymentMethod = ({setPaymentOption}) => {
                   src="/path/to/visa-logo.png"
                   alt="Visa"
                   className="w-8 h-8"
-                />  
+                />
               </div>
             </div>
             {selectedMethod === "card" && (
-              <div className="mt-4 py-4  border-t border-gray-700">
+              <div className="mt-4 py-4 border-t border-gray-700">
                 <div className="mb-4 flex flex-col gap-3">
                   <Label
                     htmlFor="saved-cards"
@@ -99,16 +101,25 @@ const PaymentMethod = ({setPaymentOption}) => {
                     Cards
                   </Label>
                   <Select
-                    defaultValue={cards.length > 0 ? `${cards[0].cardNumber} - ${cards[0].cardHolder}` : ''}
-                    className='bg-primary-foreground'
+                    defaultValue={
+                      cards.length > 0
+                        ? `${cards[0].cardNumber} - ${cards[0].cardHolder}`
+                        : ""
+                    }
+                    className="bg-primary-foreground"
                   >
                     <SelectTrigger>
                       <SelectValue placeholder="Select a card" />
                     </SelectTrigger>
                     <SelectContent>
                       {cards.map((card, index) => (
-                        <SelectItem key={index} value={`${card.cardNumber} - ${card.cardHolder}`}>
-                          {`**** **** **** ${card.cardNumber.slice(-4)} - ${card.cardHolder}`}
+                        <SelectItem
+                          key={index}
+                          value={`${card.cardNumber} - ${card.cardHolder}`}
+                        >
+                          {`**** **** **** ${card.cardNumber.slice(
+                            -4
+                          )} - ${card.cardHolder}`}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -116,7 +127,7 @@ const PaymentMethod = ({setPaymentOption}) => {
                 </div>
                 <span className="flex justify-end cursor-default">
                   <AddNewCard addCard={addCard} />
-                  </span>
+                </span>
               </div>
             )}
           </CardContent>
@@ -128,14 +139,18 @@ const PaymentMethod = ({setPaymentOption}) => {
           }`}
           onClick={() => handleSelectMethod("cash")}
         >
-          <CardContent className="pt-6 flex items-center justify-between">
-            <div>
+          <CardContent className="pt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between">
+            <div className="w-full sm:w-9/12">
               <CardTitle>Cash</CardTitle>
-              <CardDescription>
+              <CardDescription className='truncate'>
                 Pay with cash when your order is delivered.
               </CardDescription>
             </div>
-            <img src="/path/to/cash-logo.png" alt="Cash" className="w-8 h-8" />
+            <img
+              src="/path/to/cash-logo.png"
+              alt="Cash"
+              className="w-8 h-8 mt-4 sm:mt-0"
+            />
           </CardContent>
         </Card>
       </CardContent>

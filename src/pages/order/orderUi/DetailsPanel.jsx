@@ -27,10 +27,13 @@ const DetailsPanel = ({ cartData,handleEdit }) => {
         <Separator />
       </CardContent>
       <CardFooter className="">
-        <CardContent className='flex w-full gap-3'>
+        {
+          cartData.orderStat==='Completed'?'': <CardContent className='flex w-full gap-3'>
           <Button onClick={()=>{handleEdit(cartData._id, 'Canceled')}}  className='flex-1 w-full' variant='outline'>Cancel Order</Button>
           <Button onClick={()=>{handleEdit(cartData._id)}}  className='flex-1 w-full'>Complete Order</Button>
         </CardContent>
+        }
+       
       </CardFooter>
     </Card>
   );
