@@ -27,6 +27,7 @@ const ProductCard = ({ data }) => {
           <img
             src={`${data.images[0]}`}
             alt="Product Image"
+          loading="lazy"
             className="aspect-square rounded-xl object-cover w-full group-hover:scale-105 duration-300"
           />
           <Button

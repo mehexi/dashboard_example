@@ -99,6 +99,11 @@ const ProductView = forwardRef((props, ref) => {
       className: "hidden md:table-cell capitalize",
     },
     {
+      key: "stock",
+      header: "Stock",
+      className: "hidden md:table-cell capitalize",
+    },
+    {
       key: "status",
       header: "Status",
       className: "hidden md:table-cell capitalize ",

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import moment from "moment-timezone";
 
 const TimeDifference = ({ givenDate }) => {
   const [timeDifference, setTimeDifference] = useState({
@@ -10,20 +11,21 @@ const TimeDifference = ({ givenDate }) => {
 
   useEffect(() => {
     const calculateTimeDifference = () => {
-      const givenDateTime = new Date(givenDate);
-      const currentDate = new Date();
-      const differenceInMilliseconds = currentDate - givenDateTime;
+      const givenDateTime = moment.tz(givenDate, "Asia/Dhaka");
 
-      const days = Math.floor(differenceInMilliseconds / (1000 * 60 * 60 * 24));
-      const hours = Math.floor(
-        (differenceInMilliseconds % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-      );
-      const minutes = Math.floor(
-        (differenceInMilliseconds % (1000 * 60 * 60)) / (1000 * 60)
-      );
-      const seconds = Math.floor(
-        (differenceInMilliseconds % (1000 * 60)) / 1000
-      );
+      // Ensure givenDateTime is valid
+      if (!givenDateTime.isValid()) {
+        console.error("Invalid date format:", givenDate);
+        return;
+      }
+
+      const currentDate = moment.tz("Asia/Dhaka");
+      const duration = moment.duration(currentDate.diff(givenDateTime));
+
+      const days = Math.floor(duration.asDays());
+      const hours = duration.hours();
+      const minutes = duration.minutes();
+      const seconds = duration.seconds();
 
       setTimeDifference({ days, hours, minutes, seconds });
     };
@@ -36,9 +38,9 @@ const TimeDifference = ({ givenDate }) => {
   }, [givenDate]);
 
   return (
-      <p>
-          account created {"    "}
-      {timeDifference.days} days, {timeDifference.hours} hours ago
+    <p>
+      Account created {timeDifference.days} days, {timeDifference.hours} hours,{" "}
+      {timeDifference.minutes} minutes, and {timeDifference.seconds} seconds ago.
     </p>
   );
 };
