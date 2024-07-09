@@ -27,6 +27,7 @@ import DynamicBreadcrumb from "./BreadCrumb";
 import { FaCircleUser } from "react-icons/fa6";
 import { useTheme } from "@/utility/ThemeProvider";
 import { getFromCart } from "@/utility/cartUtils";
+import Bell from "./Bell";
 
 const Header = () => {
   const [cart, setCart] = useState();
@@ -175,6 +176,7 @@ const Header = () => {
         ) : (
           <></>
         )}
+          <Bell/>
         <div className="relative ml-auto flex-1 md:grow-0">
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
