@@ -50,57 +50,63 @@ const SingleOrder = () => {
 
   //handle edit product stat
 
-  const handleEdit = (_id,status) => {
-    console.log(_id)
+  const handleEdit = (_id, status) => {
+    console.log(_id);
 
     const load = {
       orderId: _id,
-      orderStat: status || 'Completed'
-    }
+      orderStat: status || "Completed",
+    };
 
     const response = async () => {
       try {
-        const res = await  axiosInstance.patch(`/sales/${_id}`,load)
-        console.log(res)
-      } catch (error)  {
-        console.log(error)
+        const res = await axiosInstance.patch(`/sales/${_id}`, load);
+        console.log(res);
+      } catch (error) {
+        console.log(error);
       }
-    } 
-    response()
-  }
+    };
+    response();
+  };
 
   return (
     <>
-      <div>
-        <div className="flex flex-row items-center gap-3 align-middle">
-          <Button
-            onClick={() => {
-              navigate(-1);
-            }}
-            size="icon"
-            variant="outline"
-          >
-            <ChevronLeft />
-          </Button>
-          <CardTitle className="flex flex-col">
-            <h1>Order ID #{data.data._id}</h1>{" "}
-            <CardDescription>{formatDate(data.data.createdAt)}</CardDescription>
-          </CardTitle>
-          <Badge
-            className={`${getStatusClass(
-              data.data.orderStat
-            )} w-fit px-2 py-1 rounded-lg`}
-          >
-            {data.data.orderStat}
-          </Badge>
-        </div>
+        <div>
+      <div className="flex flex-col md:flex-row items-start md:items-center gap-3 md:gap-5 align-middle">
+        <Button
+          onClick={() => {
+            navigate(-1);
+          }}
+          size="icon"
+          variant="outline"
+          className="self-start md:self-auto"
+        >
+          <ChevronLeft />
+        </Button>
+        <CardTitle className="flex flex-col w-full md:w-auto">
+          <h1 className="text-lg md:text-xl">Order ID #{data.data._id}</h1>
+          <CardDescription className="text-sm md:text-base">
+            {formatDate(data.data.createdAt)}
+          </CardDescription>
+        </CardTitle>
+        <Badge
+          className={`${getStatusClass(
+            data.data.orderStat
+          )} w-fit px-2 py-1 rounded-lg text-sm md:text-base self-start md:self-auto`}
+        >
+          {data.data.orderStat}
+        </Badge>
       </div>
-      <section className="grid gap-4 grid-cols-7 mt-6">
-        <div className="col-span-5 flex flex-col gap-4">
+    </div>
+      <section className="grid gap-4 grid-cols-1 md:grid-cols-7 mt-6">
+        <div className="col-span-7 md:col-span-5 flex flex-col gap-4">
           <ProductDetails productData={data.data} />
           <OrderDelivery currentStep={orderStat} />
         </div>
-        <DetailsPanel cartData={data.data} handleEdit={handleEdit} />
+        <DetailsPanel
+          cartData={data.data}
+          handleEdit={handleEdit}
+        />
       </section>
     </>
   );

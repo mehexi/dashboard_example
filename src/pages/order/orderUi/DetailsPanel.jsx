@@ -8,15 +8,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import React from "react";
 import { FaCreditCard, FaMoneyBill, FaPaypal } from "react-icons/fa6";
 
-const DetailsPanel = ({ cartData,handleEdit }) => {
-  console.log(cartData);
-
+const DetailsPanel = ({ cartData, handleEdit }) => {
   return (
-    <Card className="bg-primary-foreground col-span-2">
-      <CardContent className="pt-6 flex flex-col gap-3">
+    <Card className="bg-primary-foreground md:col-span-2 col-span-7">
+      <CardContent className="pt-6 flex flex-col gap-3 w-full">
         <CustomerInfo userId={cartData.userId} />
         <Separator />
         <DeliveryInfo deliveryOption={cartData.deliveryOption} />
@@ -26,14 +23,13 @@ const DetailsPanel = ({ cartData,handleEdit }) => {
         <PaymentInfo paymentMethod={cartData.paymentMethod} />
         <Separator />
       </CardContent>
-      <CardFooter className="">
-        {
-          cartData.orderStat==='Completed'?'': <CardContent className='flex w-full gap-3'>
-          <Button onClick={()=>{handleEdit(cartData._id, 'Canceled')}}  className='flex-1 w-full' variant='outline'>Cancel Order</Button>
-          <Button onClick={()=>{handleEdit(cartData._id)}}  className='flex-1 w-full'>Complete Order</Button>
-        </CardContent>
-        }
-       
+      <CardFooter>
+        {cartData.orderStat !== 'Completed' && (
+          <CardContent className='flex w-full gap-3'>
+            <Button onClick={() => { handleEdit(cartData._id, 'Canceled') }} className='flex-1 w-full' variant='outline'>Cancel Order</Button>
+            <Button onClick={() => { handleEdit(cartData._id) }} className='flex-1 w-full'>Complete Order</Button>
+          </CardContent>
+        )}
       </CardFooter>
     </Card>
   );
@@ -48,16 +44,14 @@ const CustomerInfo = ({ userId }) => {
         <CardTitle>Customer Info</CardTitle>
       </CardHeader>
       <CardContent className="flex items-center gap-3">
-        {userId.photoURL ? (
+        {userId.photoURL && (
           <img
             src={userId.photoURL}
             alt="user"
             className="w-12 h-12 rounded-full"
           />
-        ) : (
-          ""
         )}
-        <div className="">
+        <div>
           <h1>{userId.name}</h1>
           <CardDescription>{userId.email}</CardDescription>
         </div>
@@ -68,7 +62,7 @@ const CustomerInfo = ({ userId }) => {
 
 const DeliveryInfo = ({ deliveryOption }) => {
   if (!deliveryOption) {
-    return <></>;
+    return null;
   }
 
   const [speedy, ...timeParts] = deliveryOption.split(" ");
@@ -126,14 +120,13 @@ const ShippingInfo = ({ location }) => {
 };
 
 const PaymentInfo = ({ paymentMethod }) => {
-  console.log(paymentMethod);
   return (
     <Card className="bg-transparent border-none">
       <CardHeader>
         <CardTitle>Payment Info</CardTitle>
       </CardHeader>
-      <CardContent className="">
-        {paymentMethod === "paypal" ? (
+      <CardContent>
+        {paymentMethod === "paypal" && (
           <Card className="flex p-6 bg-primary-foreground gap-3 items-center">
             <div className="h-10 w-10 border rounded-full items-center justify-center flex bg-secondary">
               <FaPaypal size={24} />
@@ -141,7 +134,8 @@ const PaymentInfo = ({ paymentMethod }) => {
             <h1>**** paypal</h1>
             <h1 className="ml-auto">date</h1>
           </Card>
-        ) : paymentMethod === "card" ? (
+        )}
+        {paymentMethod === "card" && (
           <Card className="flex p-6 bg-primary-foreground gap-3 items-center">
             <div className="h-10 w-10 border rounded-full items-center justify-center flex bg-secondary">
               <FaCreditCard size={24} />
@@ -149,7 +143,8 @@ const PaymentInfo = ({ paymentMethod }) => {
             <h1>**** card</h1>
             <h1 className="ml-auto">date</h1>
           </Card>
-        ) : paymentMethod === "cash" ? (
+        )}
+        {paymentMethod === "cash" && (
           <Card className="flex p-6 bg-primary-foreground gap-3 items-center">
             <div className="h-10 w-10 border rounded-full items-center justify-center flex bg-secondary">
               <FaMoneyBill size={24} />
@@ -157,7 +152,7 @@ const PaymentInfo = ({ paymentMethod }) => {
             <h1>**** cash</h1>
             <h1 className="ml-auto">date</h1>
           </Card>
-        ) : null}
+        )}
       </CardContent>
     </Card>
   );

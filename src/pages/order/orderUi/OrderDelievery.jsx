@@ -16,10 +16,10 @@ const OrderDeliverySteps = ({ currentStep }) => {
         <CardTitle>Delivery Status</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className=" flex justify-between items-center mb-6">
+        <div className="flex flex-col md:flex-row justify-between items-center mb-6">
           {steps.map((step, index) => (
             <React.Fragment key={index}>
-              <div className="flex flex-col items-center">
+              <div className="flex flex-col items-center md:w-1/4">
                 <div
                   className={`flex items-center justify-center w-10 h-10 rounded-full border ${
                     index + 1 === currentStep ? "bg-blue-400" : ""
@@ -53,11 +53,16 @@ const OrderDeliverySteps = ({ currentStep }) => {
                 </div>
               </div>
               {index < steps.length - 1 && (
-                <div>
-                  <Separator />
+                <div className="hidden md:block w-full">
+                  <Separator className="mx-4" />
                 </div>
               )}
             </React.Fragment>
+          ))}
+        </div>
+        <div className="block md:hidden w-11">
+          {steps.slice(0, -1).map((step, index) => (
+            <Separator key={index}/>
           ))}
         </div>
       </CardContent>
