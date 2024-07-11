@@ -72,7 +72,7 @@ const Order = () => {
   const handlePageSizeChange = (value) => {
     setPageSize(value);
   };
-
+  
   return (
     <section className="flex flex-col gap-4">
       <div className="flex justify-between">

@@ -31,7 +31,7 @@ const SignUp = () => {
     occupation: '',
     email: '',
     password: '',
-    photoURL: '', // Add photoURL to formData
+    photoURL: '',
   });
 
   const handleChange = (e) => {
@@ -79,7 +79,7 @@ const SignUp = () => {
       const response = await axiosInstance.post("/signUp", formData);
       console.log(response.data);
 
-      // Navigate to the dashboard after successful signup
+      // Navigate to the dashboard after successful signUp
       navigate("/dashboard");
     } catch (error) {
       console.error(error);

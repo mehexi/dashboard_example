@@ -80,7 +80,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "",
-        element: <Dashboard/>
+        element: <Suspense fallback={<Loading/>}><Dashboard/></Suspense>
       },
       {
         path: "add",
