@@ -14,7 +14,7 @@ const Bell = () => {
   const [filter, setFilter] = useState("all");
 
   useEffect(() => {
-    const socket = io("http://localhost:5001");
+    const socket = io(import.meta.env.VITE_URL);
 
     const fetchNotification = async () => {
       try {
