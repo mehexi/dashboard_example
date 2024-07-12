@@ -13,18 +13,17 @@ const Bell = () => {
   const [notifications, setNotifications] = useState([]);
   const [filter, setFilter] = useState("all");
 
+  const fetchNotification = async () => {
+    try {
+      const response = await axiosInstance(`/notifications/${userId}`);
+      setNotifications(response.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
     const socket = io(import.meta.env.VITE_URL);
-
-    const fetchNotification = async () => {
-      try {
-        const response = await axiosInstance(`/notifications/${userId}`);
-        setNotifications(response.data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    fetchNotification();
 
     socket.on("connect", () => {
       console.log("Connected to socket server");
@@ -71,7 +70,7 @@ const Bell = () => {
     <Sheet>
       <SheetTrigger asChild>
         <span className="relative">
-          <Button variant="outline">
+          <Button variant="outline" onClick={fetchNotification}>
             <BellIcon size={18} />
           </Button>
           {unreadCount > 0 && (
