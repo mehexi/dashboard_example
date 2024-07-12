@@ -11,29 +11,15 @@ import React, { useEffect, useState } from "react";
 import greetings from '/The-MFR-Directory.webp'
 import { Button } from "@/components/ui/button";
 
-const GreetingsCard = () => {
-  const [user, setUser] = useState(null);
-  const userId = localStorage.getItem("uID");
+const GreetingsCard = ({user}) => {
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await axiosInstance(`/general/users/${userId}`);
-        setUser(response.data);
-        console.log(response.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchUserData();
-  }, []);
 
   if (!user) {
     return <Card></Card>;
   }
 
   return (
-    <Card className="bg-gradient-to-r from-violet-900/50 via-violet-900/50 to-indigo-900/25 min-h-80 col-span-5 flex flex-col md:flex-row justify-between items-center p-4">
+    <Card className="bg-gradient-to-r from-violet-800 via-violet-900 to-black min-h-80 col-span-6 lg:col-span-4  flex flex-col md:flex-row justify-between items-center p-4 text-white">
       <CardHeader className="max-w-full md:max-w-sm flex-1 mb-4 md:mb-0">
         <CardTitle className="text-lg md:text-xl">
           Hello {user.name}! Ready to dive in? Let's get started!

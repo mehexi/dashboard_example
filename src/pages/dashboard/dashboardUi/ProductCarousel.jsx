@@ -6,6 +6,7 @@ import {
   CarouselItem,
 } from "@/components/ui/carousel";
 import React from "react";
+import Autoplay from "embla-carousel-autoplay"
 
 
 const ProductCarousel = ({ data }) => {
@@ -16,7 +17,13 @@ const ProductCarousel = ({ data }) => {
   console.log(data.data);
 
   return (
-    <Carousel className="w-full h-80">
+    <Carousel
+    plugins={[
+      Autoplay({
+        delay: 3000,
+      }),
+    ]}
+      className="w-full h-80">
       <CarouselContent style={{ height: '100%' }}>
         {data.data.slice(0, 5).map((product) => (
           <CarouselItem
@@ -28,7 +35,7 @@ const ProductCarousel = ({ data }) => {
               alt={product.name}
               className="object-cover absolute inset-0 w-full h-full -z-10"
             />
-            <div className=" z-10 p-6 flex flex-col mt-auto  align-baseline gap-1">
+            <div className=" z-10 p-6 flex flex-col mt-auto  align-baseline gap-1 text-white">
                     <h2 className="text-xl mt-2 capitalize">{product.name}</h2>
                     <CardDescription>{product.description}</CardDescription>
                     <Button className='mt-3 w-fit'>Buy now</Button>

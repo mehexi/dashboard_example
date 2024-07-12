@@ -101,7 +101,7 @@ const ChartCard = ({ data, timeRange = "monthly", onToggle }) => {
           <BarChart data={chartData}>
             <XAxis dataKey={selectedRange === "monthly" ? "month" : "date"} />
             <YAxis />
-            <Tooltip content={<CoustomToolTip />} />
+            <Tooltip content={<CoustomToolTip />} cursor={false} />
             <Bar
               dataKey="totalUnits"
               fill="hsl(var(--primary))"
