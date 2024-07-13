@@ -57,7 +57,7 @@ const Dashboard = () => {
       <ProductSoldData overAllStatus={overAllStatus} />
       <TotalBalanceData overAllStatus={overAllStatus} />
       <NewUser allUser={allUser} />
-      <ProductChart/>
+      <ProductChart product={product} />
     </section>
   );
 };

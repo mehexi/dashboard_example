@@ -3,7 +3,7 @@ import React from 'react';
 
 const NewUser = ({allUser}) => {
     return (
-        <Card className="col-span-1 md:col-span-2 h-40 bg-primary-foreground flex justify-between items-center">
+        <Card className="col-span-6 lg:col-span-2 h-40 bg-primary-foreground flex justify-between items-center">
             <CardHeader className="col-span-1 flex gap-1">
         <CardDescription>Total User</CardDescription>
         <CardTitle className="text-3xl">

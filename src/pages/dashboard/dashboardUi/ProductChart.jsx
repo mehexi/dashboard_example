@@ -1,20 +1,17 @@
 import MultipleRadialBarChart from '@/components/coustomUi/DoughNut';
-import SalesChart from '@/components/coustomUi/DoughNut';
+import { Card } from '@/components/ui/card';
 import React from 'react';
 
-const ProductChart = () => {
+const ProductChart = ({ product }) => {
+  const data = product.data.slice(0, 3); // Send only the first 3 data items
 
-    const data = [
-        { label: 'Mens', value: 80, color: '#8e44ad' },
-        { label: 'Womens', value: 90, color: '#f39c12' },
-        { label: 'Kids', value: 62, color: '#e74c3c' },
-      ];
+  console.log(data); // Ensure the data is filtered correctly
 
-    return (
-        <div>
-          <MultipleRadialBarChart data={data} />    
-        </div>
-    );
+  return (
+    <Card className='col-span-2 bg-primary-foreground'>
+      <MultipleRadialBarChart data={data} />    
+    </Card>
+  );
 };
 
 export default ProductChart;
