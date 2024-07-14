@@ -10,6 +10,7 @@ const ChartContainer = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
+  height: 400px;
   padding: 24px;
   position: relative; /* To position the title absolutely inside it */
 `;
@@ -87,13 +88,15 @@ const gradients = [
 const MultipleRadialBarChart = ({ data }) => {
   const [hoveredData, setHoveredData] = useState(null);
 
-  const chartData = data.map((product, index) => ({
-    name: product.name,
-    value: product.stat[0].yearlyTotalSoldUnits,
-    fill: `url(#grad${index + 1})`, // Apply gradient to each bar
-    gradient: `linear-gradient(to right, ${gradients[index].startColor}, ${gradients[index].middleColor}, ${gradients[index].endColor})`
-  }));
-
+  const chartData = data
+    .filter(product => product.stat && product.stat.length > 0) // Filter out products without stats
+    .map((product, index) => ({
+      name: product.name,
+      value: product.stat[0].yearlyTotalSoldUnits,
+      fill: `url(#grad${index + 1})`,
+      gradient: `linear-gradient(to right, ${gradients[index].startColor}, ${gradients[index].middleColor}, ${gradients[index].endColor})`
+    }));
+  
   return (
     <ChartContainer>
       <CardDescription className="mr-auto">Yearly Sold Units by Product</CardDescription>
@@ -107,7 +110,7 @@ const MultipleRadialBarChart = ({ data }) => {
           </CardHeader>) : 
          ( <CardHeader>
             <CardDescription>Total Products</CardDescription>
-            <CardTitle>3</CardTitle>
+            <CardTitle>{chartData.length}</CardTitle>
           </CardHeader>)
         }
       </CenteredTitle>

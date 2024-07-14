@@ -6,6 +6,9 @@ import axiosInstance from "@/axios/AxiosIntence";
 import TotalBalanceData from "./dashboardUi/TotalBlanceData";
 import NewUser from "./dashboardUi/NewUser";
 import ProductChart from "./dashboardUi/ProductChart";
+import ProductYearlyChart from "./dashboardUi/ProductYearlyChart";
+import BestBuyer from "./dashboardUi/BestBuyer";
+import NewProduct from "./dashboardUi/NewProdcuts";
 
 const Dashboard = () => {
   const userId = localStorage.getItem("uID");
@@ -58,6 +61,9 @@ const Dashboard = () => {
       <TotalBalanceData overAllStatus={overAllStatus} />
       <NewUser allUser={allUser} />
       <ProductChart product={product} />
+      <ProductYearlyChart overAllStatus={overAllStatus} />
+      <BestBuyer user={allUser} />
+      <NewProduct product={product.data} />
     </section>
   );
 };

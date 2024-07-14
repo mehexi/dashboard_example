@@ -8,7 +8,7 @@ const ProductChart = ({ product }) => {
   console.log(data); // Ensure the data is filtered correctly
 
   return (
-    <Card className='col-span-2 bg-primary-foreground'>
+    <Card className='col-span-6 md:col-span-2  bg-primary-foreground max-h-[400px]'>
       <MultipleRadialBarChart data={data} />    
     </Card>
   );

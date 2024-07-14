@@ -29,7 +29,7 @@ const LineChartComp = ({ data, dataType,keyType }) => {
   });
 
   return (
-    <ResponsiveContainer width={160} height={40}>
+    <ResponsiveContainer width={100} height={40}>
       <LineChart data={chartData}>
               <XAxis dataKey="name" hide />
         <Tooltip content={<LineChartTool />} cursor={false} />
